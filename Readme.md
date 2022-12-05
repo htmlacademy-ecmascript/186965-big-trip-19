@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
-* Студент: [Виктория Кашина](https://up.htmlacademy.ru/ecmascript/19/user/186965).
-* Наставник: `Неизвестно`.
+- Студент: [Виктория Кашина](https://up.htmlacademy.ru/ecmascript/19/user/186965).
+- Наставник: [Анастасия Ничипорчук](https://htmlacademy.ru/profile/id612797).
 
 ---
 
