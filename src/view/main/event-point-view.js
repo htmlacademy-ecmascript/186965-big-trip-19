@@ -5,7 +5,7 @@ import { mockOffersTypes } from '../../mock/offers.js';
 
 
 const createEventTripPointTemplate = (point) => {
-  const { dateFrom, type, timeTo, timeFrom, basePrice, dateTo, isFavorite, destinationName, destination } = point;
+  const { dateFrom, type, timeTo, timeFrom, basePrice, dateTo, isFavorite, destinationName } = point;
 
   const humanizeDateFrom = humanizeDate(dateFrom, START_DATE_FORMAT);
   const dateFromEvent = humanizeDate(dateFrom, DATE_TIME_EVENT);
