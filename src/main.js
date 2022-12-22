@@ -2,8 +2,8 @@
 import NewTripMainInfoBlockView from './view/header/trip-info-block-view.js';
 import NewTripControlsFiltersView from './view/header/trip-controls-filters-view.js';
 
-import NewTripSortView from './view/main/trip-sort-view.js';
-import NewTripEventsListView from './view/main/trip-events-list-view.js';
+import TripSortView from './view/main/trip-sort-view.js';
+import TripEventsListView from './view/main/trip-events-list-view.js';
 
 
 // Presenter
@@ -32,8 +32,8 @@ headerPresenter.init();
 
 
 //main
-render(new NewTripSortView(), tripsEventsContainerElement);
-render(new NewTripEventsListView(), tripsEventsContainerElement);
+render(new TripSortView(), tripsEventsContainerElement);
+render(new TripEventsListView(), tripsEventsContainerElement);
 
 const mainPresenter = new TripEventListPresenter(
   tripsEventsContainerElement,

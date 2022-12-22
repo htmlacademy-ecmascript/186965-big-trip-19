@@ -30,19 +30,21 @@ const createTripControlsTemplate = () => `<div class="trip-main__trip-controls  
 </div>`;
 
 export default class NewTripControlsView {
-  getTemplate() {
+  #element = null;
+
+  get template() {
     return createTripControlsTemplate();
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getElement());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }
