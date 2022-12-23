@@ -149,25 +149,27 @@ ${createCheckedTripOffersTemplate}
 };
 
 
-export default class NewEditTripPointView {
+export default class EditTripPointView {
+  #element = null;
+  #point = null;
 
   constructor({ point }) {
-    this.point = point;
+    this.#point = point;
   }
 
-  getTemplate() {
-    return createEditEventPointTemplate(this.point);
+  get template() {
+    return createEditEventPointTemplate(this.#point);
   }
 
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

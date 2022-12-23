@@ -10,25 +10,26 @@ const createTripInfoMainTemplate = () => `<div class="trip-info__main">
 
 // класс для создания блока с информацией о путешествии
 export default class NewTripInfoMainView {
+  #element = null;
 
   // метод получения разметки
-  getTemplate() {
+  get template() {
     return createTripInfoMainTemplate();
   }
 
 
   // метод создания блока с информацией о путешествии
-  getElement() {
-    if (!this.element) {
-      this.element = createElement(this.getTemplate());
+  get element() {
+    if (!this.#element) {
+      this.#element = createElement(this.template);
     }
 
-    return this.element;
+    return this.#element;
   }
 
 
   // метод удаления блока с информацией о путешествии
   removeElement() {
-    this.element = null;
+    this.#element = null;
   }
 }

@@ -14,4 +14,6 @@ const humanizeDate = (date, dateFormat) => date ? dayjs(date).format(dateFormat)
 
 const isOfferChecked = (checked) => Object.values(checked).some(Boolean);
 
-export { getRandomArrayElement, getRandomNumber, humanizeDate, isOfferChecked };
+const isEscapeKey = (evt) => (evt.key === 'Escape' || evt.key === 'Esc');
+
+export { getRandomArrayElement, getRandomNumber, humanizeDate, isOfferChecked, isEscapeKey };
