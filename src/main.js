@@ -2,10 +2,6 @@
 import NewTripMainInfoBlockView from './view/header/trip-info-block-view.js';
 import NewTripControlsFiltersView from './view/header/trip-controls-filters-view.js';
 
-import TripSortView from './view/main/trip-sort-view.js';
-import TripEventsListView from './view/main/trip-events-list-view.js';
-
-
 // Presenter
 import HeaderPresenter from './presenter/header/header-presenter.js';
 import TripEventListPresenter from './presenter/main/trip-events-presenter.js';
@@ -18,8 +14,6 @@ import { render, RenderPosition } from './render.js';
 
 const tripMainElement = document.querySelector('.trip-main');
 const tripControlsFiltersElement = tripMainElement.querySelector('.trip-controls');
-const headerPresenter = new HeaderPresenter(tripMainElement);
-
 const tripsEventsContainerElement = document.querySelector('.trip-events');
 
 const pointModel = new TripPointModel();
@@ -28,15 +22,17 @@ const pointModel = new TripPointModel();
 render(new NewTripMainInfoBlockView(), tripMainElement, RenderPosition.AFTERBEGIN);
 render(new NewTripControlsFiltersView(), tripControlsFiltersElement);
 
+const headerPresenter = new HeaderPresenter(tripMainElement, pointModel);
+
 headerPresenter.init();
 
 
 //main
-render(new TripSortView(), tripsEventsContainerElement);
-render(new TripEventsListView(), tripsEventsContainerElement);
-
 const mainPresenter = new TripEventListPresenter(
   tripsEventsContainerElement,
   pointModel);
 
 mainPresenter.init();
+
+
+export { tripsEventsContainerElement };
