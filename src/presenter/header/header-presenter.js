@@ -8,13 +8,21 @@ import { render } from '../../render.js';
 
 export default class HeaderPresenter {
   #headerContainer = null;
+  #pointsModel = null;
+  #tripPoints = [];
 
-  constructor(headerContainer) {
+  constructor(headerContainer, pointsModel) {
     this.#headerContainer = headerContainer;
+    this.#pointsModel = pointsModel;
   }
 
   init() {
-    render(new NewTripInfoMainView(), this.#headerContainer.querySelector('.trip-info'));
-    render(new NewTripInfoCostView(), this.#headerContainer.querySelector('.trip-info'));
+
+    this.#tripPoints = [...this.#pointsModel.points];
+
+    if (this.#tripPoints.length !== 0) {
+      render(new NewTripInfoMainView(), this.#headerContainer.querySelector('.trip-info'));
+      render(new NewTripInfoCostView(), this.#headerContainer.querySelector('.trip-info'));
+    }
   }
 }
