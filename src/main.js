@@ -9,7 +9,7 @@ import TripEventListPresenter from './presenter/main/trip-events-presenter.js';
 // Model
 import TripPointModel from './models/trip-point-model.js';
 
-import { render, RenderPosition } from './render.js';
+import { render, RenderPosition } from './framework/render.js';
 
 
 const tripMainElement = document.querySelector('.trip-main');
