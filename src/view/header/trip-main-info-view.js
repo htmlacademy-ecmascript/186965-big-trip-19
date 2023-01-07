@@ -1,6 +1,5 @@
-import { createElement } from '../../render.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 
-// разметка блок с информацией о путешествии
 const createTripInfoMainTemplate = () => `<div class="trip-info__main">
 <h1 class="trip-info__title">Amsterdam — Chamonix — Geneva</h1>
 
@@ -8,28 +7,8 @@ const createTripInfoMainTemplate = () => `<div class="trip-info__main">
 </div>`;
 
 
-// класс для создания блока с информацией о путешествии
-export default class NewTripInfoMainView {
-  #element = null;
-
-  // метод получения разметки
+export default class NewTripInfoMainView extends AbstractView {
   get template() {
     return createTripInfoMainTemplate();
-  }
-
-
-  // метод создания блока с информацией о путешествии
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-
-  // метод удаления блока с информацией о путешествии
-  removeElement() {
-    this.#element = null;
   }
 }

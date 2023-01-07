@@ -1,25 +1,11 @@
-import { createElement } from '../../render.js';
+import AbstractView from '../../framework/view/abstract-view.js';
 
 const createTripMainInfoBlockTemplate = () => '<section class="trip-main__trip-info  trip-info"></section';
 
 
-export default class NewTripMainInfoBlockView {
-  #element = null;
-
-
+export default class NewTripMainInfoBlockView extends AbstractView {
   get template() {
     return createTripMainInfoBlockTemplate();
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
-
-    return this.#element;
-  }
-
-  removeElement() {
-    this.#element = null;
-  }
 }

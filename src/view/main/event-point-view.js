@@ -1,8 +1,9 @@
-import { createElement } from '../../render.js';
 import { humanizeDate } from '../../utils.js';
 import { START_DATE_FORMAT, DATE_TIME_EVENT } from '../../const.js';
 import { mockOffersTypes } from '../../mock/offers.js';
 
+
+import AbstractView from '../../framework/view/abstract-view.js';
 
 const createEventTripPointTemplate = (point) => {
   const { dateFrom, type, timeTo, timeFrom, basePrice, dateTo, isFavorite, destinationName } = point;
@@ -65,27 +66,29 @@ ${addedOffers}
 };
 
 
-export default class EventTripPointView {
-  #element = null;
+export default class EventTripPointView extends AbstractView {
   #point = null;
+  #handlerClickOpen = null;
 
-  constructor({ point }) {
+
+  constructor({ point, onEditClickOpen }) {
+    super();
     this.#point = point;
+    this.#handlerClickOpen = onEditClickOpen;
+
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandlerOpen);
+
+
   }
 
   get template() {
     return createEventTripPointTemplate(this.#point);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  #editClickHandlerOpen = (evt) => {
+    evt.preventDefault();
+    this.#handlerClickOpen();
+  };
 
-    return this.#element;
-  }
 
-  removeElement() {
-    this.#element = null;
-  }
 }

@@ -3,7 +3,7 @@ import NewTripInfoMainView from '../../view/header/trip-main-info-view.js';
 import NewTripInfoCostView from '../../view/header/trip-info-cost-view.js';
 
 
-import { render } from '../../render.js';
+import { render } from '../../framework/render.js';
 
 
 export default class HeaderPresenter {
@@ -20,7 +20,7 @@ export default class HeaderPresenter {
 
     this.#tripPoints = [...this.#pointsModel.points];
 
-    if (this.#tripPoints.length !== 0) {
+    if (this.#tripPoints.length) {
       render(new NewTripInfoMainView(), this.#headerContainer.querySelector('.trip-info'));
       render(new NewTripInfoCostView(), this.#headerContainer.querySelector('.trip-info'));
     }

@@ -1,7 +1,8 @@
-import { createElement } from '../../render.js';
 import { humanizeDate } from '../../utils.js';
 import { DATE_TIME_EDIT_EVENT } from '../../const.js';
 import { mockOffersTypes } from '../../mock/offers.js';
+
+import AbstractView from '../../framework/view/abstract-view.js';
 
 
 const createEditEventPointTemplate = (point) => {
@@ -131,9 +132,7 @@ const createEditEventPointTemplate = (point) => {
         <div class="event__available-offers">
 ${createCheckedTripOffersTemplate}
 
-
       </div>
-
 
         </div>
       </section>
@@ -149,27 +148,36 @@ ${createCheckedTripOffersTemplate}
 };
 
 
-export default class EditTripPointView {
-  #element = null;
+export default class EditTripPointView extends AbstractView {
   #point = null;
+  #handlerFormSubmit = null;
+  #handlerClickClose = null;
 
-  constructor({ point }) {
+
+  constructor({ point, onFormSubmit, onEditClickClose }) {
+    super();
     this.#point = point;
+    this.#handlerFormSubmit = onFormSubmit;
+    this.#handlerClickClose = onEditClickClose;
+
+    this.element.querySelector('.event--edit').addEventListener('submit', this.#formSubmitHandler);
+
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandlerClose);
   }
 
   get template() {
     return createEditEventPointTemplate(this.#point);
   }
 
-  get element() {
-    if (!this.#element) {
-      this.#element = createElement(this.template);
-    }
+  #formSubmitHandler = (evt) => {
+    evt.preventDefault();
+    this.#handlerFormSubmit();
+  };
 
-    return this.#element;
-  }
 
-  removeElement() {
-    this.#element = null;
-  }
+  #editClickHandlerClose = (evt) => {
+    evt.preventDefault();
+    this.#handlerClickClose();
+  };
+
 }
