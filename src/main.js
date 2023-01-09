@@ -11,6 +11,9 @@ import TripPointModel from './models/trip-point-model.js';
 
 import { render, RenderPosition } from './framework/render.js';
 
+//mock
+import { generateFilter } from './mock/filter.js';
+
 
 const tripMainElement = document.querySelector('.trip-main');
 const tripControlsFiltersElement = tripMainElement.querySelector('.trip-controls');
@@ -19,8 +22,12 @@ const tripsEventsContainerElement = document.querySelector('.trip-events');
 const pointModel = new TripPointModel();
 
 //header
+
+const filters = generateFilter(pointModel.points);
+console.log(filters)
+
 render(new NewTripMainInfoBlockView(), tripMainElement, RenderPosition.AFTERBEGIN);
-render(new NewTripControlsFiltersView(), tripControlsFiltersElement);
+render(new NewTripControlsFiltersView({ filters }), tripControlsFiltersElement);
 
 const headerPresenter = new HeaderPresenter(tripMainElement, pointModel);
 

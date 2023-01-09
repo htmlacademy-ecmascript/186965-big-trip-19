@@ -21,8 +21,8 @@ export default class HeaderPresenter {
     this.#tripPoints = [...this.#pointsModel.points];
 
     if (this.#tripPoints.length) {
-      render(new NewTripInfoMainView(), this.#headerContainer.querySelector('.trip-info'));
-      render(new NewTripInfoCostView(), this.#headerContainer.querySelector('.trip-info'));
+      render(new NewTripInfoMainView(this.#tripPoints), this.#headerContainer.querySelector('.trip-info'));
+      render(new NewTripInfoCostView(this.#tripPoints), this.#headerContainer.querySelector('.trip-info'));
     }
   }
 }

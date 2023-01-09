@@ -1,14 +1,12 @@
 
 import { mockDestinations } from './destinations.js';
-import { getRandomArrayElement } from '../utils.js';
+import { getRandomArrayElement } from '../utils/common.js';
 
 const mockPoints = [
   {
-    'basePrice': 20,
-    'timeFrom': '10:30',
-    'timeTo': '11:00',
-    'dateFrom': '2019-07-10T22:55:56.845Z',
-    'dateTo': '2019-07-11T11:22:13.375Z',
+    'basePrice': 10,
+    'dateFrom': '2022-07-10T10:55:56.845Z',
+    'dateTo': '2022-08-10T16:32:06.845Z',
     'destinationName': mockDestinations[0].name,
     'destination': mockDestinations[0].description,
     'id': '0',
@@ -17,11 +15,9 @@ const mockPoints = [
     'type': 'taxi'
   },
   {
-    'basePrice': 160,
-    'timeFrom': '12:25',
-    'timeTo': '13:35',
-    'dateFrom': '2019-07-10T22:55:56.845Z',
-    'dateTo': '2019-07-11T11:22:13.375Z',
+    'basePrice': 20,
+    'dateFrom': '2023-01-10T16:32:06.845Z',
+    'dateTo': '2023-01-11T16:32:06.845Z',
     'destinationName': mockDestinations[1].name,
     'destination': mockDestinations[1].description,
     'id': '0',
@@ -30,11 +26,9 @@ const mockPoints = [
     'type': 'bus'
   },
   {
-    'basePrice': 500,
-    'timeFrom': '10:25',
-    'timeTo': '13:00',
-    'dateFrom': '2019-07-10T22:55:56.845Z',
-    'dateTo': '2019-07-11T11:22:13.375Z',
+    'basePrice': 30,
+    'dateFrom': '2023-02-10T16:32:06.845Z',
+    'dateTo': '2023-02-11T16:32:06.845Z',
     'destinationName': mockDestinations[2].name,
     'destination': mockDestinations[2].description,
     'id': '0',
@@ -43,11 +37,9 @@ const mockPoints = [
     'type': 'train'
   },
   {
-    'basePrice': 90,
-    'timeFrom': '15:05',
-    'timeTo': '16:45',
-    'dateFrom': '2019-07-10T22:55:56.845Z',
-    'dateTo': '2019-07-11T11:22:13.375Z',
+    'basePrice': 40,
+    'dateFrom': '2023-03-10T16:32:06.845Z',
+    'dateTo': '2023-03-11T16:32:06.845Z',
     'destinationName': mockDestinations[3].name,
     'destination': mockDestinations[3].description,
     'id': '0',
@@ -56,11 +48,9 @@ const mockPoints = [
     'type': 'ship'
   },
   {
-    'basePrice': 160,
-    'timeFrom': '14:30',
-    'timeTo': '16:05',
-    'dateFrom': '2019-07-10T22:55:56.845Z',
-    'dateTo': '2019-07-11T11:22:13.375Z',
+    'basePrice': 50,
+    'dateFrom': '2023-04-10T16:32:06.845Z',
+    'dateTo': '2023-04-11T16:32:06.845Z',
     'destinationName': mockDestinations[4].name,
     'destination': mockDestinations[4].description,
     'id': '0',
@@ -69,11 +59,9 @@ const mockPoints = [
     'type': 'drive'
   },
   {
-    'basePrice': 160,
-    'timeFrom': '12:25',
-    'timeTo': '13:35',
-    'dateFrom': '2019-07-10T22:55:56.845Z',
-    'dateTo': '2019-07-11T11:22:13.375Z',
+    'basePrice': 60,
+    'dateFrom': '2023-05-10T16:32:06.845Z',
+    'dateTo': '2023-05-11T16:32:06.845Z',
     'destinationName': mockDestinations[0].name,
     'destination': mockDestinations[0].description,
     'id': '0',
@@ -82,11 +70,9 @@ const mockPoints = [
     'type': 'flight'
   },
   {
-    'basePrice': 600,
-    'timeFrom': '16:20',
-    'timeTo': '17:00',
-    'dateFrom': '2019-07-10T22:55:56.845Z',
-    'dateTo': '2019-07-11T11:22:13.375Z',
+    'basePrice': 70,
+    'dateFrom': '2023-06-10T16:32:06.845Z',
+    'dateTo': '2023-06-11T16:32:06.845Z',
     'destinationName': mockDestinations[1].name,
     'destination': mockDestinations[1].description,
     'id': '0',
@@ -95,11 +81,9 @@ const mockPoints = [
     'type': 'check-in'
   },
   {
-    'basePrice': 180,
-    'timeFrom': '11:15 ',
-    'timeTo': '12:15',
-    'dateFrom': '2019-07-10T22:55:56.845Z',
-    'dateTo': '2019-07-11T11:22:13.375Z',
+    'basePrice': 80,
+    'dateFrom': '2024-01-10T16:32:06.845Z',
+    'dateTo': '2024-01-11T16:32:06.845Z',
     'destinationName': mockDestinations[2].name,
     'destination': mockDestinations[2].description,
     'id': '0',
@@ -108,11 +92,9 @@ const mockPoints = [
     'type': 'sightseeing'
   },
   {
-    'basePrice': 110,
-    'timeFrom': '21:00',
-    'timeTo': '22:00',
-    'dateFrom': '2019-07-10T22:55:56.845Z',
-    'dateTo': '2019-07-11T11:22:13.375Z',
+    'basePrice': 90,
+    'dateFrom': '2024-02-10T16:32:06.845Z',
+    'dateTo': '2024-02-11T16:32:06.845Z',
     'destinationName': mockDestinations[3].name,
     'destination': mockDestinations[3].description,
     'id': '0',

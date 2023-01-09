@@ -7,7 +7,7 @@ import TripEventsListView from '../../view/main/trip-events-list-view.js';
 import TripSortView from '../../view/main/trip-sort-view.js';
 
 import { render } from '../../framework/render.js';
-import { isEscapeKey } from '../../utils.js';
+import { isEscapeKey } from '../../utils/common.js';
 
 import { tripsEventsContainerElement } from '../../main.js';
 
