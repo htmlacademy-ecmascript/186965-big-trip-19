@@ -24,7 +24,6 @@ const pointModel = new TripPointModel();
 //header
 
 const filters = generateFilter(pointModel.points);
-console.log(filters)
 
 render(new NewTripMainInfoBlockView(), tripMainElement, RenderPosition.AFTERBEGIN);
 render(new NewTripControlsFiltersView({ filters }), tripControlsFiltersElement);
