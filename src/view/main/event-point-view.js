@@ -1,16 +1,20 @@
-import { humanizeDate } from '../../utils.js';
-import { START_DATE_FORMAT, DATE_TIME_EVENT } from '../../const.js';
+
+import { humanizeDate, getTripDuration } from '../../utils/point.js';
+import { START_DATE_FORMAT, DATE_TIME_EVENT, DATE_TIME } from '../../const.js';
 import { mockOffersTypes } from '../../mock/offers.js';
 
 
 import AbstractView from '../../framework/view/abstract-view.js';
 
 const createEventTripPointTemplate = (point) => {
-  const { dateFrom, type, timeTo, timeFrom, basePrice, dateTo, isFavorite, destinationName } = point;
+  const { dateFrom, type, basePrice, dateTo, isFavorite, destinationName } = point;
 
   const humanizeDateFrom = humanizeDate(dateFrom, START_DATE_FORMAT);
   const dateFromEvent = humanizeDate(dateFrom, DATE_TIME_EVENT);
-  const dateToEvent = humanizeDate(dateTo, DATE_TIME_EVENT);
+  const tripTimeFrom = humanizeDate(dateFrom, DATE_TIME);
+  const tripTimeTo = humanizeDate(dateTo, DATE_TIME);
+
+  const tripDuration = getTripDuration(dateFrom, dateTo);
 
   const pointTypeOffer = mockOffersTypes.find((offer) => offer.type === type);
 
@@ -38,11 +42,11 @@ const createEventTripPointTemplate = (point) => {
   <h3 class="event__title">${type} ${destinationName}</h3>
   <div class="event__schedule">
     <p class="event__time">
-      <time class="event__start-time" datetime="${dateFromEvent}T${timeFrom}">${timeFrom}</time>
+      <time class="event__start-time" datetime="${dateFrom}">${tripTimeFrom}</time>
       —
-      <time class="event__end-time" datetime="${dateToEvent}T${timeTo}">${timeTo}</time>
+      <time class="event__end-time" datetime="${dateTo}">${tripTimeTo}</time>
     </p>
-    <p class="event__duration">30M</p>
+    <p class="event__duration">${tripDuration}</p>
   </div>
   <p class="event__price">
     €&nbsp;<span class="event__price-value">${basePrice}</span>
@@ -68,15 +72,15 @@ ${addedOffers}
 
 export default class EventTripPointView extends AbstractView {
   #point = null;
-  #handlerClickOpen = null;
+  #onEditClickOpen = null;
 
 
   constructor({ point, onEditClickOpen }) {
     super();
     this.#point = point;
-    this.#handlerClickOpen = onEditClickOpen;
+    this.#onEditClickOpen = onEditClickOpen;
 
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#editClickHandlerOpen);
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onEditButtonClickOpen);
 
 
   }
@@ -85,9 +89,9 @@ export default class EventTripPointView extends AbstractView {
     return createEventTripPointTemplate(this.#point);
   }
 
-  #editClickHandlerOpen = (evt) => {
+  #onEditButtonClickOpen = (evt) => {
     evt.preventDefault();
-    this.#handlerClickOpen();
+    this.#onEditClickOpen();
   };
 
 
