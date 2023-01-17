@@ -6,7 +6,7 @@ import AbstractView from '../../framework/view/abstract-view.js';
 
 
 const createEditEventPointTemplate = (point) => {
-  const { dateFrom, type, timeTo, timeFrom, basePrice, dateTo, destinationName, destination } = point;
+  const { dateFrom, type, basePrice, dateTo, destinationName, destination } = point;
 
   const dateFromEvent = humanizeDate(dateFrom, DATE_TIME_EDIT_EVENT);
   const dateToEvent = humanizeDate(dateTo, DATE_TIME_EDIT_EVENT);
@@ -105,10 +105,10 @@ const createEditEventPointTemplate = (point) => {
 
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time-1">From</label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dateFromEvent} ${timeFrom}">
+        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${dateFromEvent}">
         —
         <label class="visually-hidden" for="event-end-time-1">To</label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dateToEvent} ${timeTo}">
+        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${dateToEvent}">
       </div>
 
       <div class="event__field-group  event__field-group--price">
@@ -171,13 +171,13 @@ export default class EditTripPointView extends AbstractView {
 
   #onFormClick = (evt) => {
     evt.preventDefault();
-    this.#onFormSubmit();
+    this.#onFormSubmit(this.#point);
   };
 
 
   #onEditClickClose = (evt) => {
     evt.preventDefault();
-    this.#onEditArrowClickClose();
+    this.#onEditArrowClickClose(this.#point);
   };
 
 }

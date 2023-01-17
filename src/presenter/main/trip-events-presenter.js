@@ -1,20 +1,23 @@
 
 // View
-import EventTripPointView from '../../view/main/event-point-view.js';
-import EditTripPointView from '../../view/main/edit-event-point-view.js';
+
 import NoPointView from '../../view/main/no-point-view.js';
 import TripEventsListView from '../../view/main/trip-events-list-view.js';
 import TripSortView from '../../view/main/trip-sort-view.js';
 
 import { render } from '../../framework/render.js';
-import { isEscapeKey } from '../../utils/common.js';
 
 import { tripsEventsContainerElement } from '../../main.js';
+import WaypointPresenter from './waypoint-presenter.js';
+import { updateWaypoint } from '../../utils/common.js';
 
 export default class TripEventListPresenter {
   #tripsList = null;
   #pointsModel = null;
   #tripPoints = [];
+  #tripSortComponent = new TripSortView();
+  #waypointListComponent = new TripEventsListView();
+  #waypointPresenter = new Map();
 
 
   constructor(tripsList, pointsModel) {
@@ -30,47 +33,16 @@ export default class TripEventListPresenter {
 
 
   #renderPoint(point) {
-    const onEscKeyPress = (evt) => {
-      if (isEscapeKey(evt)) {
-        evt.preventDefault();
-        replaceEditFormToPoint.call(this);
-
-        document.removeEventListener('keydown', onEscKeyPress);
-      }
-    };
-
-    const pointComponent = new EventTripPointView({
-      point,
-      onEditClickOpen: () => {
-        replacePointToEditForm.call(this);
-        document.addEventListener('keydown', onEscKeyPress);
-      }
+    const waypointPresenter = new WaypointPresenter({
+      waypointList: this.#waypointListComponent.element,
+      onWaypointChange: this.#onWaypointChange,
+      onWaypointModeChange: this.#onWaypointModeChange
     });
 
-    const pointEditComponent = new EditTripPointView({
-      point,
-      onFormSubmit: () => {
-        replaceEditFormToPoint.call(this);
-        document.removeEventListener('keydown', onEscKeyPress);
-      },
-      onEditClickClose: () => {
-        replaceEditFormToPoint.call(this);
-        document.removeEventListener('keydown', onEscKeyPress);
-      }
-    });
-
-
-    function replacePointToEditForm() {
-      this.#tripsList.querySelector('.trip-events__list').replaceChild(pointEditComponent.element, pointComponent.element);
-    }
-
-    function replaceEditFormToPoint() {
-      this.#tripsList.querySelector('.trip-events__list').replaceChild(pointComponent.element, pointEditComponent.element);
-    }
-
-    render(pointComponent, this.#tripsList.querySelector('.trip-events__list'));
-
+    waypointPresenter.init(point);
+    this.#waypointPresenter.set(point.id, waypointPresenter);
   }
+
 
   #renderPointsList() {
     if (!this.#tripPoints.length) {
@@ -79,12 +51,34 @@ export default class TripEventListPresenter {
     }
 
 
-    render(new TripSortView(), tripsEventsContainerElement);
-    render(new TripEventsListView(), tripsEventsContainerElement);
+    this.#renderSortView();
+    this.#renderWaypointList();
     this.#tripPoints.forEach((tripPoint) => {
       this.#renderPoint(tripPoint);
     });
 
   }
+
+  #renderSortView() {
+    render(this.#tripSortComponent, tripsEventsContainerElement);
+  }
+
+  #renderWaypointList() {
+    render(this.#waypointListComponent, tripsEventsContainerElement);
+  }
+
+  #clearWaypointsList() {
+    this.#waypointPresenter.forEach((presenter) => presenter.destroy());
+    this.#waypointPresenter.clear();
+  }
+
+  #onWaypointChange = (updatedWaypoint) => {
+    this.#tripPoints = updateWaypoint(this.#tripPoints, updatedWaypoint);
+    this.#waypointPresenter.get(updatedWaypoint.id).init(updatedWaypoint);
+  };
+
+  #onWaypointModeChange = () => {
+    this.#waypointPresenter.forEach((presenter) => presenter.resetView());
+  };
 
 }

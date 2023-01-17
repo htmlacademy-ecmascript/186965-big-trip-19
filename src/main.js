@@ -22,7 +22,6 @@ const tripsEventsContainerElement = document.querySelector('.trip-events');
 const pointModel = new TripPointModel();
 
 //header
-
 const filters = generateFilter(pointModel.points);
 
 render(new NewTripMainInfoBlockView(), tripMainElement, RenderPosition.AFTERBEGIN);

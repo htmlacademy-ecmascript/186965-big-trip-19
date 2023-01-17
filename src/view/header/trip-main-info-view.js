@@ -19,15 +19,6 @@ const createTripInfoMainTemplate = (waypoints) => {
     case 1:
       routeWaypoint = startCity;
       break;
-    case 2:
-      routeWaypoint = `${startCity} &mdash; ${middleCities} &mdash; ${endCity}`;
-      break;
-    case 3:
-      routeWaypoint = `${startCity} &mdash; ${middleCities} &mdash; ${endCity}`;
-      break;
-    case 4:
-      routeWaypoint = `${startCity} &mdash; ${middleCities} &mdash; ${endCity}`;
-      break;
     default:
       routeWaypoint = `${startCity} &mdash; ${middleCities} &mdash; ${endCity}`;
   }

@@ -73,15 +73,19 @@ ${addedOffers}
 export default class EventTripPointView extends AbstractView {
   #point = null;
   #onEditClickOpen = null;
+  #onFavouriteClick = null;
 
 
-  constructor({ point, onEditClickOpen }) {
+  constructor({ point, onEditClickOpen, onFavouriteClick }) {
     super();
     this.#point = point;
     this.#onEditClickOpen = onEditClickOpen;
 
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onEditButtonClickOpen);
 
+    this.#onFavouriteClick = onFavouriteClick;
+
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#onFavouriteBtnClick);
 
   }
 
@@ -94,5 +98,10 @@ export default class EventTripPointView extends AbstractView {
     this.#onEditClickOpen();
   };
 
+
+  #onFavouriteBtnClick = (evt) => {
+    evt.preventDefault();
+    this.#onFavouriteClick();
+  };
 
 }

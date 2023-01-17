@@ -9,4 +9,6 @@ const getRandomNumber = (min, max) => {
 
 const isEscapeKey = (evt) => (evt.key === 'Escape' || evt.key === 'Esc');
 
-export { getRandomArrayElement, getRandomNumber, isEscapeKey };
+const updateWaypoint = (waypoints, update) => waypoints.map((waypoint) => waypoint.id === update.id ? update : waypoint);
+
+export { getRandomArrayElement, getRandomNumber, isEscapeKey, updateWaypoint };
