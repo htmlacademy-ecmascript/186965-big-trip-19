@@ -57,8 +57,6 @@ export default class WaypointsListPresenter {
       return;
     }
 
-
-
     this.#renderWaypointList();
     this.#tripPoints.forEach((tripPoint) => {
       this.#renderPoint(tripPoint);
