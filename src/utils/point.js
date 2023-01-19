@@ -18,12 +18,16 @@ const getTripDatesDifference = (dateFrom, dateTo) => Math.floor(dayjs(dayjs(date
 const getTripDuration = (dateFrom, dateTo) => {
   const difference = getTripDatesDifference(dateFrom, dateTo);
 
-  if (difference < MINUTES_PER_HOUR) {
-    return dayjs.duration(difference, 'minutes').format('mm[M]');
-  } else if (difference >= MINUTES_PER_HOUR && difference < MINUTES_PER_DAY) {
-    return dayjs.duration(difference, 'minutes').format('HH[H] mm[M]');
-  } else if (difference >= MINUTES_PER_DAY) {
-    return dayjs.duration(difference, 'minutes').format('DD[D] HH[H] mm[M]');
+
+  switch (true) {
+    case (difference < MINUTES_PER_HOUR):
+      return dayjs.duration(difference, 'minutes').format('mm[M]');
+
+    case (difference >= MINUTES_PER_HOUR && difference < MINUTES_PER_DAY):
+      return dayjs.duration(difference, 'minutes').format('HH[H] mm[M]');
+
+    case (difference >= MINUTES_PER_DAY):
+      return dayjs.duration(difference, 'minutes').format('DD[D] HH[H] mm[M]');
   }
 };
 

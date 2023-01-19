@@ -1,6 +1,7 @@
 
 import { mockDestinations } from './destinations.js';
 import { getRandomArrayElement } from '../utils/common.js';
+import { nanoid } from 'nanoid';
 
 const mockPoints = [
   {
@@ -9,7 +10,6 @@ const mockPoints = [
     'dateTo': '2022-08-10T16:32:06.845Z',
     'destinationName': mockDestinations[0].name,
     'destination': mockDestinations[0].description,
-    'id': '0',
     'isFavorite': true,
     'offers': [1, 5],
     'type': 'taxi'
@@ -20,7 +20,6 @@ const mockPoints = [
     'dateTo': '2023-01-11T16:32:06.845Z',
     'destinationName': mockDestinations[1].name,
     'destination': mockDestinations[1].description,
-    'id': '0',
     'isFavorite': false,
     'offers': [1, 5, 3],
     'type': 'bus'
@@ -31,7 +30,6 @@ const mockPoints = [
     'dateTo': '2023-02-11T16:32:06.845Z',
     'destinationName': mockDestinations[2].name,
     'destination': mockDestinations[2].description,
-    'id': '0',
     'isFavorite': true,
     'offers': [1, 2, 3, 4, 5],
     'type': 'train'
@@ -42,7 +40,6 @@ const mockPoints = [
     'dateTo': '2023-03-11T16:32:06.845Z',
     'destinationName': mockDestinations[3].name,
     'destination': mockDestinations[3].description,
-    'id': '0',
     'isFavorite': false,
     'offers': [1, 2, 3, 4, 5],
     'type': 'ship'
@@ -53,7 +50,6 @@ const mockPoints = [
     'dateTo': '2023-04-11T16:32:06.845Z',
     'destinationName': mockDestinations[4].name,
     'destination': mockDestinations[4].description,
-    'id': '0',
     'isFavorite': false,
     'offers': [2, 3, 5],
     'type': 'drive'
@@ -64,7 +60,6 @@ const mockPoints = [
     'dateTo': '2023-05-11T16:32:06.845Z',
     'destinationName': mockDestinations[0].name,
     'destination': mockDestinations[0].description,
-    'id': '0',
     'isFavorite': false,
     'offers': [2, 3, 4, 5],
     'type': 'flight'
@@ -75,7 +70,6 @@ const mockPoints = [
     'dateTo': '2023-06-11T16:32:06.845Z',
     'destinationName': mockDestinations[1].name,
     'destination': mockDestinations[1].description,
-    'id': '0',
     'isFavorite': true,
     'offers': [2],
     'type': 'check-in'
@@ -86,7 +80,6 @@ const mockPoints = [
     'dateTo': '2024-01-11T16:32:06.845Z',
     'destinationName': mockDestinations[2].name,
     'destination': mockDestinations[2].description,
-    'id': '0',
     'isFavorite': false,
     'offers': [1, 2, 5],
     'type': 'sightseeing'
@@ -97,14 +90,17 @@ const mockPoints = [
     'dateTo': '2024-02-11T16:32:06.845Z',
     'destinationName': mockDestinations[3].name,
     'destination': mockDestinations[3].description,
-    'id': '0',
     'isFavorite': true,
     'offers': [2],
     'type': 'restaurant'
   },
 ];
 
-const getRandomPoint = () => getRandomArrayElement(mockPoints);
+
+const getRandomPoint = () => ({
+  id: nanoid(),
+  ...getRandomArrayElement(mockPoints)
+});
 
 
 export { getRandomPoint };
