@@ -7,7 +7,7 @@ const mockPoints = [
   {
     'basePrice': 10,
     'dateFrom': '2022-07-10T10:55:56.845Z',
-    'dateTo': '2022-08-10T16:32:06.845Z',
+    'dateTo': '2022-08-10T18:32:06.845Z',
     'destinationName': mockDestinations[0].name,
     'destination': mockDestinations[0].description,
     'isFavorite': true,
@@ -16,7 +16,7 @@ const mockPoints = [
   },
   {
     'basePrice': 20,
-    'dateFrom': '2023-01-10T16:32:06.845Z',
+    'dateFrom': '2023-01-10T10:32:36.845Z',
     'dateTo': '2023-01-11T16:32:06.845Z',
     'destinationName': mockDestinations[1].name,
     'destination': mockDestinations[1].description,
@@ -26,8 +26,8 @@ const mockPoints = [
   },
   {
     'basePrice': 30,
-    'dateFrom': '2023-02-10T16:32:06.845Z',
-    'dateTo': '2023-02-11T16:32:06.845Z',
+    'dateFrom': '2023-02-10T11:22:06.845Z',
+    'dateTo': '2023-02-11T18:32:06.845Z',
     'destinationName': mockDestinations[2].name,
     'destination': mockDestinations[2].description,
     'isFavorite': true,
@@ -36,8 +36,8 @@ const mockPoints = [
   },
   {
     'basePrice': 40,
-    'dateFrom': '2023-03-10T16:32:06.845Z',
-    'dateTo': '2023-03-11T16:32:06.845Z',
+    'dateFrom': '2023-03-10T19:32:06.845Z',
+    'dateTo': '2023-03-11T20:22:06.845Z',
     'destinationName': mockDestinations[3].name,
     'destination': mockDestinations[3].description,
     'isFavorite': false,
@@ -46,7 +46,7 @@ const mockPoints = [
   },
   {
     'basePrice': 50,
-    'dateFrom': '2023-04-10T16:32:06.845Z',
+    'dateFrom': '2023-04-10T06:32:06.845Z',
     'dateTo': '2023-04-11T16:32:06.845Z',
     'destinationName': mockDestinations[4].name,
     'destination': mockDestinations[4].description,
@@ -56,8 +56,8 @@ const mockPoints = [
   },
   {
     'basePrice': 60,
-    'dateFrom': '2023-05-10T16:32:06.845Z',
-    'dateTo': '2023-05-11T16:32:06.845Z',
+    'dateFrom': '2023-05-10T19:32:06.845Z',
+    'dateTo': '2023-05-11T10:22:06.845Z',
     'destinationName': mockDestinations[0].name,
     'destination': mockDestinations[0].description,
     'isFavorite': false,
@@ -66,7 +66,7 @@ const mockPoints = [
   },
   {
     'basePrice': 70,
-    'dateFrom': '2023-06-10T16:32:06.845Z',
+    'dateFrom': '2023-06-10T03:12:06.845Z',
     'dateTo': '2023-06-11T16:32:06.845Z',
     'destinationName': mockDestinations[1].name,
     'destination': mockDestinations[1].description,

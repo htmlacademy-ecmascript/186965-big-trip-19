@@ -55,8 +55,8 @@ export default class WaypointPresenter {
     }
 
 
-    if (this.#waypointsListComponent.contains(previousPointEditComponent.element)) {
-      replace(this.#waypointEditComponent, previousPointEditComponent);
+    if (this.#mode === WaypointMode.DEFAULT) {
+      replace(this.#waypointComponent, previousPointComponent);
     }
 
     remove(previousPointComponent);

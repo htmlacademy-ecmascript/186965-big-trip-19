@@ -4,7 +4,7 @@ import NewTripControlsFiltersView from './view/header/trip-controls-filters-view
 
 // Presenter
 import HeaderPresenter from './presenter/header/header-presenter.js';
-import TripEventListPresenter from './presenter/main/trip-events-presenter.js';
+import TripBoardPresenter from './presenter/main/trip-events-presenter.js';
 
 // Model
 import TripPointModel from './models/trip-point-model.js';
@@ -33,9 +33,7 @@ headerPresenter.init();
 
 
 //main
-const mainPresenter = new TripEventListPresenter(
-  tripsEventsContainerElement,
-  pointModel);
+const mainPresenter = new TripBoardPresenter(tripsEventsContainerElement);
 
 mainPresenter.init();
 
