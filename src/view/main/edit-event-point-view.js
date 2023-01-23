@@ -160,22 +160,22 @@ export default class EditTripPointView extends AbstractView {
     this.#onFormSubmit = onFormSubmit;
     this.#onEditArrowClickClose = onEditClickClose;
 
-    this.element.querySelector('.event--edit').addEventListener('submit', this.#onFormClick);
+    this.element.querySelector('.event--edit').addEventListener('submit', this.#closePointFormEdit);
 
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onEditClickClose);
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closePointEditForm);
   }
 
   get template() {
     return createEditEventPointTemplate(this.#point);
   }
 
-  #onFormClick = (evt) => {
+  #closePointFormEdit = (evt) => {
     evt.preventDefault();
     this.#onFormSubmit(this.#point);
   };
 
 
-  #onEditClickClose = (evt) => {
+  #closePointEditForm = (evt) => {
     evt.preventDefault();
     this.#onEditArrowClickClose(this.#point);
   };

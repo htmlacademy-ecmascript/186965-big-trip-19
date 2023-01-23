@@ -10,7 +10,7 @@ const mockPoints = [
     'dateTo': '2022-08-10T18:32:06.845Z',
     'destinationName': mockDestinations[0].name,
     'destination': mockDestinations[0].description,
-    'isFavorite': true,
+    'isFavourite': true,
     'offers': [1, 5],
     'type': 'taxi'
   },
@@ -20,7 +20,7 @@ const mockPoints = [
     'dateTo': '2023-01-11T16:32:06.845Z',
     'destinationName': mockDestinations[1].name,
     'destination': mockDestinations[1].description,
-    'isFavorite': false,
+    'isFavourite': false,
     'offers': [1, 5, 3],
     'type': 'bus'
   },
@@ -30,7 +30,7 @@ const mockPoints = [
     'dateTo': '2023-02-11T18:32:06.845Z',
     'destinationName': mockDestinations[2].name,
     'destination': mockDestinations[2].description,
-    'isFavorite': true,
+    'isFavourite': true,
     'offers': [1, 2, 3, 4, 5],
     'type': 'train'
   },
@@ -40,7 +40,7 @@ const mockPoints = [
     'dateTo': '2023-03-11T20:22:06.845Z',
     'destinationName': mockDestinations[3].name,
     'destination': mockDestinations[3].description,
-    'isFavorite': false,
+    'isFavourite': false,
     'offers': [1, 2, 3, 4, 5],
     'type': 'ship'
   },
@@ -50,7 +50,7 @@ const mockPoints = [
     'dateTo': '2023-04-11T16:32:06.845Z',
     'destinationName': mockDestinations[4].name,
     'destination': mockDestinations[4].description,
-    'isFavorite': false,
+    'isFavourite': false,
     'offers': [2, 3, 5],
     'type': 'drive'
   },
@@ -60,7 +60,7 @@ const mockPoints = [
     'dateTo': '2023-05-11T10:22:06.845Z',
     'destinationName': mockDestinations[0].name,
     'destination': mockDestinations[0].description,
-    'isFavorite': false,
+    'isFavourite': false,
     'offers': [2, 3, 4, 5],
     'type': 'flight'
   },
@@ -70,7 +70,7 @@ const mockPoints = [
     'dateTo': '2023-06-11T16:32:06.845Z',
     'destinationName': mockDestinations[1].name,
     'destination': mockDestinations[1].description,
-    'isFavorite': true,
+    'isFavourite': true,
     'offers': [2],
     'type': 'check-in'
   },
@@ -80,7 +80,7 @@ const mockPoints = [
     'dateTo': '2024-01-11T16:32:06.845Z',
     'destinationName': mockDestinations[2].name,
     'destination': mockDestinations[2].description,
-    'isFavorite': false,
+    'isFavourite': false,
     'offers': [1, 2, 5],
     'type': 'sightseeing'
   },
@@ -90,7 +90,7 @@ const mockPoints = [
     'dateTo': '2024-02-11T16:32:06.845Z',
     'destinationName': mockDestinations[3].name,
     'destination': mockDestinations[3].description,
-    'isFavorite': true,
+    'isFavourite': true,
     'offers': [2],
     'type': 'restaurant'
   },

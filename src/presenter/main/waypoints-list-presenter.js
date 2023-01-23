@@ -42,8 +42,8 @@ export default class WaypointsListPresenter {
   #renderPoint(point) {
     const waypointPresenter = new WaypointPresenter({
       waypointList: this.#waypointListComponent.element,
-      onWaypointChange: this.#onWaypointChange,
-      onWaypointModeChange: this.#onWaypointModeChange
+      onWaypointChange: this.#handleWaypointDataChange,
+      onWaypointModeChange: this.#handleWaypointModeChange
     });
 
     waypointPresenter.init(point);
@@ -64,13 +64,13 @@ export default class WaypointsListPresenter {
 
   }
 
-  #onWaypointChange = (updatedWaypoint) => {
+  #handleWaypointDataChange = (updatedWaypoint) => {
     this.#tripPoints = updateWaypoint(this.#tripPoints, updatedWaypoint);
     this.#sourcedPoints = updateWaypoint(this.#sourcedPoints, updatedWaypoint);
     this.#waypointPresenter.get(updatedWaypoint.id).init(updatedWaypoint);
   };
 
-  #onWaypointModeChange = () => {
+  #handleWaypointModeChange = () => {
     this.#waypointPresenter.forEach((presenter) => presenter.resetView());
   };
 
@@ -93,7 +93,7 @@ export default class WaypointsListPresenter {
     this.#currentSortType = sortType;
   }
 
-  #onSortTypeChange = (sortType) => {
+  #handleSortTypeChange = (sortType) => {
     if (this.#currentSortType === sortType) {
       return;
     }
@@ -105,7 +105,7 @@ export default class WaypointsListPresenter {
 
   #renderSortView() {
     this.#sortComponent = new TripSortView({
-      onSortTypeChange: this.#onSortTypeChange,
+      onSortTypeChange: this.#handleSortTypeChange,
     });
 
     render(this.#sortComponent, tripsEventsContainerElement);

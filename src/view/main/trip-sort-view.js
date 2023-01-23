@@ -39,14 +39,14 @@ export default class TripSortView extends AbstractView {
 
     this.#onSortTypeChange = onSortTypeChange;
 
-    this.element.addEventListener('click', this.#onSortType);
+    this.element.addEventListener('click', this.#clickSortTypeBtn);
   }
 
   get template() {
     return createTripSortTemplate();
   }
 
-  #onSortType = (evt) => {
+  #clickSortTypeBtn = (evt) => {
     if (evt.target.tagName !== 'INPUT') {
       return;
     }
