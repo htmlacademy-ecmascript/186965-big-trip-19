@@ -1,84 +1,32 @@
 
 // View
 
-import NoPointView from '../../view/main/no-point-view.js';
-import TripEventsListView from '../../view/main/trip-events-list-view.js';
-import TripSortView from '../../view/main/trip-sort-view.js';
+import WaypointsListPresenter from './waypoints-list-presenter.js';
 
-import { render } from '../../framework/render.js';
+import TripPointModel from '../../models/trip-point-model.js';
 
-import { tripsEventsContainerElement } from '../../main.js';
-import WaypointPresenter from './waypoint-presenter.js';
-import { updateWaypoint } from '../../utils/common.js';
-
-export default class TripEventListPresenter {
-  #tripsList = null;
+export default class TripBoardPresenter {
+  #tripComponent = null;
   #pointsModel = null;
-  #tripPoints = [];
-  #tripSortComponent = new TripSortView();
-  #waypointListComponent = new TripEventsListView();
-  #waypointPresenter = new Map();
 
+  constructor(tripComponent) {
+    this.#tripComponent = tripComponent;
 
-  constructor(tripsList, pointsModel) {
-    this.#tripsList = tripsList;
-    this.#pointsModel = pointsModel;
   }
 
   init() {
-    this.#tripPoints = [...this.#pointsModel.points];
+    this.#pointsModel = new TripPointModel();
 
-    this.#renderPointsList();
+    this.#renderWaypointsList();
   }
 
+  #renderWaypointsList() {
+    const waypointListPresenter = new WaypointsListPresenter(
+      this.#tripComponent,
+      this.#pointsModel,
+      this.#pointsModel,
+    );
 
-  #renderPoint(point) {
-    const waypointPresenter = new WaypointPresenter({
-      waypointList: this.#waypointListComponent.element,
-      onWaypointChange: this.#onWaypointChange,
-      onWaypointModeChange: this.#onWaypointModeChange
-    });
-
-    waypointPresenter.init(point);
-    this.#waypointPresenter.set(point.id, waypointPresenter);
+    waypointListPresenter.init();
   }
-
-
-  #renderPointsList() {
-    if (!this.#tripPoints.length) {
-      render(new NoPointView(), this.#tripsList);
-      return;
-    }
-
-
-    this.#renderSortView();
-    this.#renderWaypointList();
-    this.#tripPoints.forEach((tripPoint) => {
-      this.#renderPoint(tripPoint);
-    });
-
-  }
-
-  #renderSortView() {
-    render(this.#tripSortComponent, tripsEventsContainerElement);
-  }
-
-  #renderWaypointList() {
-    render(this.#waypointListComponent, tripsEventsContainerElement);
-  }
-
-  #clearWaypointsList() {
-    this.#waypointPresenter.forEach((presenter) => presenter.destroy());
-    this.#waypointPresenter.clear();
-  }
-
-  #onWaypointChange = (updatedWaypoint) => {
-    this.#tripPoints = updateWaypoint(this.#tripPoints, updatedWaypoint);
-    this.#waypointPresenter.get(updatedWaypoint.id).init(updatedWaypoint);
-  };
-
-  #onWaypointModeChange = () => {
-    this.#waypointPresenter.forEach((presenter) => presenter.resetView());
-  };
-
 }

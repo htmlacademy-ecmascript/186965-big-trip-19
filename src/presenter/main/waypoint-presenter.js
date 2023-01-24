@@ -32,15 +32,15 @@ export default class WaypointPresenter {
 
     this.#waypointComponent = new EventTripPointView({
       point: this.#waypoint,
-      onEditClickOpen: this.#onEditClick,
-      onFavouriteClick: this.#onFavouriteClick,
+      onEditClickOpen: this.#openPointEditForm,
+      onFavouriteClick: this.#clickFavouriteBtn,
     });
 
 
     this.#waypointEditComponent = new EditTripPointView({
       point: this.#waypoint,
-      onFormSubmit: this.#onFormSubmit,
-      onEditClickClose: this.#onFormSubmit
+      onFormSubmit: this.#formSubmit,
+      onEditClickClose: this.#formSubmit
     });
 
 
@@ -55,8 +55,8 @@ export default class WaypointPresenter {
     }
 
 
-    if (this.#waypointsListComponent.contains(previousPointEditComponent.element)) {
-      replace(this.#waypointEditComponent, previousPointEditComponent);
+    if (this.#mode === WaypointMode.DEFAULT) {
+      replace(this.#waypointComponent, previousPointComponent);
     }
 
     remove(previousPointComponent);
@@ -98,17 +98,17 @@ export default class WaypointPresenter {
   }
 
 
-  #onEditClick = () => {
+  #openPointEditForm = () => {
     this.#replacePointToEditForm();
   };
 
-  #onFormSubmit = (point) => {
+  #formSubmit = (point) => {
     this.#onWaypointDataChange(point);
     this.#replaceEditFormToPoint();
   };
 
 
-  #onFavouriteClick = () => {
-    this.#onWaypointDataChange({ ...this.#waypoint, isFavorite: !this.#waypoint.isFavorite });
+  #clickFavouriteBtn = () => {
+    this.#onWaypointDataChange({ ...this.#waypoint, isFavourite: !this.#waypoint.isFavourite });
   };
 }

@@ -38,5 +38,5 @@ const isPresentTrip = (dateFrom, dateTo) => dayjs().isSameOrBefore(dayjs(dateFro
 
 const isPastTrip = (dateTo) => dayjs().isAfter(dateTo);
 
-export { humanizeDate, isOfferChecked, getTripDuration, isFutureTrip, isPresentTrip, isPastTrip };
+export { humanizeDate, isOfferChecked, getTripDuration, isFutureTrip, isPresentTrip, isPastTrip, getTripDatesDifference };
 

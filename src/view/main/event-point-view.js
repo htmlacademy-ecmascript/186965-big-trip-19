@@ -7,7 +7,7 @@ import { mockOffersTypes } from '../../mock/offers.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 
 const createEventTripPointTemplate = (point) => {
-  const { dateFrom, type, basePrice, dateTo, isFavorite, destinationName } = point;
+  const { dateFrom, type, basePrice, dateTo, isFavourite, destinationName } = point;
 
   const humanizeDateFrom = humanizeDate(dateFrom, START_DATE_FORMAT);
   const dateFromEvent = humanizeDate(dateFrom, DATE_TIME_EVENT);
@@ -30,7 +30,7 @@ const createEventTripPointTemplate = (point) => {
   }).join('');
 
 
-  const favoriteClassName = isFavorite ? 'event__favorite-btn event__favorite-btn--active' : 'event__favorite-btn';
+  const favoriteClassName = isFavourite ? 'event__favorite-btn event__favorite-btn--active' : 'event__favorite-btn';
 
 
   return `<li class="trip-events__item">
@@ -81,11 +81,11 @@ export default class EventTripPointView extends AbstractView {
     this.#point = point;
     this.#onEditClickOpen = onEditClickOpen;
 
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onEditButtonClickOpen);
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#openPointEditForm);
 
     this.#onFavouriteClick = onFavouriteClick;
 
-    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#onFavouriteBtnClick);
+    this.element.querySelector('.event__favorite-btn').addEventListener('click', this.#clickFavouriteBtn);
 
   }
 
@@ -93,13 +93,13 @@ export default class EventTripPointView extends AbstractView {
     return createEventTripPointTemplate(this.#point);
   }
 
-  #onEditButtonClickOpen = (evt) => {
+  #openPointEditForm = (evt) => {
     evt.preventDefault();
     this.#onEditClickOpen();
   };
 
 
-  #onFavouriteBtnClick = (evt) => {
+  #clickFavouriteBtn = (evt) => {
     evt.preventDefault();
     this.#onFavouriteClick();
   };
