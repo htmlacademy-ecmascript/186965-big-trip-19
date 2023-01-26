@@ -5,14 +5,10 @@ import { mockOffersTypes } from '../../mock/offers.js';
 import AbstractView from '../../framework/view/abstract-view.js';
 
 
-const createEditEventPointTemplate = (point) => {
-  const { dateFrom, type, basePrice, dateTo, destinationName, destination } = point;
+const createPointOffersTemplate = (point) => {
+  const { type } = point;
 
-  const dateFromEvent = humanizeDate(dateFrom, DATE_TIME_EDIT_EVENT);
-  const dateToEvent = humanizeDate(dateTo, DATE_TIME_EDIT_EVENT);
-
-
-  const pointTypeOffer = mockOffersTypes.find((offer) => offer.type === point.type);
+  const pointTypeOffer = mockOffersTypes.find((offer) => offer.type === type);
 
   const createCheckedTripOffersTemplate = pointTypeOffer.offers.map((offer) => {
     const checkedOffers = point.offers.includes(offer.id) ? offer.checked : '';
@@ -28,6 +24,32 @@ const createEditEventPointTemplate = (point) => {
     </div> `);
   }).join('');
 
+  return createCheckedTripOffersTemplate;
+};
+
+
+const createPointEventTemplate = () => {
+  const pointTypeOffer = Object.values(mockOffersTypes);
+
+  const one = pointTypeOffer.map((item) => (`<div class="event__type-item">
+    <input id="event-${item.type}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="-${item.type}">
+    <label class="event__type-label  event__type-label--${item.type}" for="event-type--${item.type}-1">${item.type}</label>
+  </div>`)
+  ).join('');
+
+  return one;
+};
+
+
+const createEditEventPointTemplate = (point) => {
+  const { dateFrom, type, basePrice, dateTo, destinationName, destination } = point;
+
+  const dateFromEvent = humanizeDate(dateFrom, DATE_TIME_EDIT_EVENT);
+  const dateToEvent = humanizeDate(dateTo, DATE_TIME_EDIT_EVENT);
+
+  const repeatingOfferTemplate = createPointOffersTemplate(point);
+  const createPointTypeTemplate = createPointEventTemplate();
+
 
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -42,51 +64,8 @@ const createEditEventPointTemplate = (point) => {
         <div class="event__type-list">
           <fieldset class="event__type-group">
             <legend class="visually-hidden">Event type</legend>
+  ${createPointTypeTemplate}
 
-            <div class="event__type-item">
-              <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi">
-              <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus">
-              <label class="event__type-label  event__type-label--bus" for="event-type-bus-1">Bus</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train">
-              <label class="event__type-label  event__type-label--train" for="event-type-train-1">Train</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-ship-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship">
-              <label class="event__type-label  event__type-label--ship" for="event-type-ship-1">Ship</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive">
-              <label class="event__type-label  event__type-label--drive" for="event-type-drive-1">Drive</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" checked="">
-              <label class="event__type-label  event__type-label--flight" for="event-type-flight-1">Flight</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-check-in-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in">
-              <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-1">Check-in</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-sightseeing-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing">
-              <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-1">Sightseeing</label>
-            </div>
-
-            <div class="event__type-item">
-              <input id="event-type-restaurant-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant">
-              <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-1">Restaurant</label>
-            </div>
           </fieldset>
         </div>
       </div>
@@ -130,7 +109,7 @@ const createEditEventPointTemplate = (point) => {
         <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
         <div class="event__available-offers">
-${createCheckedTripOffersTemplate}
+${repeatingOfferTemplate}
 
       </div>
 
@@ -156,6 +135,7 @@ export default class EditTripPointView extends AbstractView {
 
   constructor({ point, onFormSubmit, onEditClickClose }) {
     super();
+    // this._setState = (EditTripPointView.parsePointToState(point));
     this.#point = point;
     this.#onFormSubmit = onFormSubmit;
     this.#onEditArrowClickClose = onEditClickClose;
@@ -179,5 +159,6 @@ export default class EditTripPointView extends AbstractView {
     evt.preventDefault();
     this.#onEditArrowClickClose(this.#point);
   };
+
 
 }
