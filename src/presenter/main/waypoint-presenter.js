@@ -40,7 +40,7 @@ export default class WaypointPresenter {
     this.#waypointEditComponent = new EditTripPointView({
       point: this.#waypoint,
       onFormSubmit: this.#formSubmit,
-      onEditClickClose: this.#formSubmit
+      onEditClickClose: this.#closeEditForm
     });
 
 
@@ -70,6 +70,7 @@ export default class WaypointPresenter {
 
   resetView() {
     if (this.#mode !== WaypointMode.DEFAULT) {
+      this.#waypointEditComponent.reset(this.#waypoint);
       this.#replaceEditFormToPoint();
     }
   }
@@ -77,6 +78,7 @@ export default class WaypointPresenter {
   #onEscKeyPress = (evt) => {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
+      this.#waypointEditComponent.reset(this.#waypoint);
       this.#replaceEditFormToPoint();
 
     }
@@ -107,6 +109,10 @@ export default class WaypointPresenter {
     this.#replaceEditFormToPoint();
   };
 
+  #closeEditForm = () => {
+    this.#waypointEditComponent.reset(this.#waypoint);
+    this.#replaceEditFormToPoint();
+  };
 
   #clickFavouriteBtn = () => {
     this.#onWaypointDataChange({ ...this.#waypoint, isFavourite: !this.#waypoint.isFavourite });
