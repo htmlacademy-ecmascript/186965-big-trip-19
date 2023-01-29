@@ -6,8 +6,8 @@ import { mockDestinations } from '../../mock/destinations.js';
 
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
 
-import flatpickr from 'flatpickr';
-import 'flatpickr/dist/flatpickr.js';
+// import flatpickr from 'flatpickr';
+// import 'flatpickr/dist/flatpickr.js';
 
 
 const getAllPointTypeOffers = (point) => {
