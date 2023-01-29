@@ -103,5 +103,5 @@ const getRandomPoint = () => ({
 });
 
 
-export { getRandomPoint };
+export { getRandomPoint, mockPoints };
 
