@@ -3,6 +3,7 @@ import { DATE_TIME_EDIT_EVENT, POINT_TYPES } from '../../const.js';
 import { mockOffersTypes } from '../../mock/offers.js';
 import { mockDestinations } from '../../mock/destinations.js';
 
+
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
 
 import flatpickr from 'flatpickr';
@@ -24,20 +25,19 @@ const allDestinationPictures = Object.values(mockDestinations);
 const createPointOffersTemplate = (point) => {
 
   const allPointTypeOffers = getAllPointTypeOffers(point);
+  if (!allPointTypeOffers) {
+    return [];
+  }
 
-  return allPointTypeOffers.offers.map((offer) => {
-    const checkedOffers = point.offers.includes(offer.id) ? offer.checked : '';
-
-    return (
-      `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${point.type}-${offer.id}" type="checkbox" name="event-offer-luggage" ${checkedOffers ? 'checked' : ''}>
+  return allPointTypeOffers.offers.map((offer) => (
+    `<div class="event__offer-selector">
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${point.type}-${offer.id}" type="checkbox" name="event-offer-luggage" ${offer.checked ? 'checked' : ''}>
       <label class="event__offer-label" for="event-offer-${point.type}-${offer.id}">
         <span class="event__offer-title">${offer.title}</span>
         +€&nbsp;
         <span class="event__offer-price">${offer.price}</span>
       </label>
-    </div> `);
-  }).join('');
+    </div> `)).join('');
 };
 
 const createPointEventTemplate = (currentType) => {
@@ -163,7 +163,6 @@ export default class EditTripPointView extends AbstractStatefulView {
     this.#onFormSubmit = onFormSubmit;
     this.#onEditArrowClickClose = onEditClickClose;
 
-
     this._restoreHandlers();
 
   }
@@ -175,7 +174,7 @@ export default class EditTripPointView extends AbstractStatefulView {
   _restoreHandlers() {
     this.element.querySelector('.event--edit').addEventListener('submit', this.#closePointFormEdit);
     this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closePointEditForm);
-    this.element.querySelector('.event__type-list').addEventListener('click', this.#onEventPointChange);
+    this.element.querySelector('.event__type-group').addEventListener('click', this.#onEventPointChange);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#onDestinationChange);
 
   }
@@ -195,8 +194,10 @@ export default class EditTripPointView extends AbstractStatefulView {
   #onEventPointChange = (evt) => {
     evt.preventDefault();
     this.updateElement({
-      type: evt.target.value
+      type: evt.target.outerText,
+      offers: this._state.type === evt.target.outerText ? this._state.offers : []
     });
+
   };
 
 
