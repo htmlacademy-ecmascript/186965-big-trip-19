@@ -31,6 +31,10 @@ export default class WaypointsListPresenter {
 
   }
 
+  get points() {
+    return this.#pointsModel.points;
+  }
+
   init() {
 
     this.#tripPoints = [...this.#pointsModel.points].sort(sortPointsByDay);
