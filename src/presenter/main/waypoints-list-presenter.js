@@ -3,14 +3,13 @@ import NoPointView from '../../view/main/no-point-view.js';
 import TripEventsListView from '../../view/main/trip-events-list-view.js';
 import TripSortView from '../../view/main/trip-sort-view.js';
 
-import { render } from '../../framework/render.js';
+import { render, remove } from '../../framework/render.js';
 
 import { tripsEventsContainerElement } from '../../main.js';
 import { SortType, UpdateType, UserAction } from '../../const.js';
 import { sortPointsByDay, sortPointsByTime, sortPointsByPrice } from '../../utils/sort.js';
 
 export default class WaypointsListPresenter {
-  #pointsContainer = null;
   #tripsList = null;
   #pointsModel = null;
 
@@ -19,6 +18,8 @@ export default class WaypointsListPresenter {
 
   #sortComponent = null;
   #currentSortType = SortType.DAY;
+
+  #noPointComponent = new NoPointView();
 
 
   constructor(tripsList, pointsModel) {
@@ -41,7 +42,6 @@ export default class WaypointsListPresenter {
 
   init() {
 
-    this.#renderSortView();
     this.#renderPointsList();
   }
 
@@ -58,12 +58,14 @@ export default class WaypointsListPresenter {
 
 
   #renderPointsList() {
+    this.#renderSortView();
+
     const pointCount = this.points.length;
     const points = this.points.slice();
 
 
     if (!pointCount) {
-      render(new NoPointView(), this.#tripsList);
+      this.#renderNoPoints();
       return;
     }
 
@@ -75,6 +77,9 @@ export default class WaypointsListPresenter {
 
   }
 
+  #renderNoPoints() {
+    render(this.#noPointComponent, this.#tripsList);
+  }
 
   #handleWaypointModeChange = () => {
     this.#waypointPresenter.forEach((presenter) => presenter.resetView());
@@ -90,26 +95,33 @@ export default class WaypointsListPresenter {
     }
 
     this.#currentSortType = sortType;
-    this.#clearWaypointsList();
+    this.#clearWaypointsList({ resetSortType: false });
     this.#renderPointsList();
   };
 
   #renderSortView() {
     this.#sortComponent = new TripSortView({
+      currentSortType: this.#currentSortType,
       onSortTypeChange: this.#handleSortTypeChange,
     });
 
     render(this.#sortComponent, tripsEventsContainerElement);
   }
 
-  #clearWaypointsList() {
+  #clearWaypointsList({ resetSortType = false } = {}) {
+
     this.#waypointPresenter.forEach((presenter) => presenter.destroy());
     this.#waypointPresenter.clear();
+
+    remove(this.#sortComponent);
+    remove(this.#noPointComponent);
+
+    if (resetSortType) {
+      this.#currentSortType = SortType.DAY;
+    }
   }
 
   #handleViewAction = (actionType, updateType, update) => {
-    console.log(actionType, updateType, update);
-
     switch (actionType) {
       case UserAction.UPDATE_WAYPOINT:
         this.#pointsModel.updateWaypoint(updateType, update);
@@ -124,16 +136,19 @@ export default class WaypointsListPresenter {
   };
 
   #handleModelEvent = (updateType, data) => {
-    console.log(updateType, data);
     switch (updateType) {
       case UpdateType.PATCH:
         // - обновить часть списка (например, когда поменялось описание)
         this.#waypointPresenter.get(data.id).init(data);
         break;
       case UpdateType.MINOR:
+        this.#clearWaypointsList();
+        this.#renderPointsList();
         // - обновить список (например, когда задача ушла в архив)
         break;
       case UpdateType.MAJOR:
+        this.#clearWaypointsList({ resetSortType: true });
+        this.#renderPointsList();
         // - обновить всю доску (например, при переключении фильтра)
         break;
     }
