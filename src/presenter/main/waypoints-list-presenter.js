@@ -6,7 +6,7 @@ import TripSortView from '../../view/main/trip-sort-view.js';
 import { render } from '../../framework/render.js';
 
 import { tripsEventsContainerElement } from '../../main.js';
-import { SortType } from '../../const.js';
+import { SortType, UpdateType, UserAction } from '../../const.js';
 import { sortPointsByDay, sortPointsByTime, sortPointsByPrice } from '../../utils/sort.js';
 
 export default class WaypointsListPresenter {
@@ -75,9 +75,6 @@ export default class WaypointsListPresenter {
 
   }
 
-  #handleWaypointDataChange = (updatedWaypoint) => {
-    this.#waypointPresenter.get(updatedWaypoint.id).init(updatedWaypoint);
-  };
 
   #handleWaypointModeChange = () => {
     this.#waypointPresenter.forEach((presenter) => presenter.resetView());
@@ -112,18 +109,34 @@ export default class WaypointsListPresenter {
 
   #handleViewAction = (actionType, updateType, update) => {
     console.log(actionType, updateType, update);
-    // Здесь будем вызывать обновление модели.
-    // actionType - действие пользователя, нужно чтобы понять, какой метод модели вызвать
-    // updateType - тип изменений, нужно чтобы понять, что после нужно обновить
-    // update - обновленные данные
+
+    switch (actionType) {
+      case UserAction.UPDATE_WAYPOINT:
+        this.#pointsModel.updateWaypoint(updateType, update);
+        break;
+      case UserAction.ADD_WAYPOINT:
+        this.#pointsModel.addWaypoint(updateType, update);
+        break;
+      case UserAction.DELETE_WAYPOINT:
+        this.#pointsModel.deleteWaypoint(updateType, update);
+        break;
+    }
   };
 
   #handleModelEvent = (updateType, data) => {
     console.log(updateType, data);
-    // В зависимости от типа изменений решаем, что делать:
-    // - обновить часть списка (например, когда поменялось описание)
-    // - обновить список (например, когда задача ушла в архив)
-    // - обновить всю доску (например, при переключении фильтра)
+    switch (updateType) {
+      case UpdateType.PATCH:
+        // - обновить часть списка (например, когда поменялось описание)
+        this.#waypointPresenter.get(data.id).init(data);
+        break;
+      case UpdateType.MINOR:
+        // - обновить список (например, когда задача ушла в архив)
+        break;
+      case UpdateType.MAJOR:
+        // - обновить всю доску (например, при переключении фильтра)
+        break;
+    }
   };
 
 
