@@ -24,7 +24,6 @@ export default class TripBoardPresenter {
     const waypointListPresenter = new WaypointsListPresenter(
       this.#tripComponent,
       this.#pointsModel,
-      this.#pointsModel,
     );
 
     waypointListPresenter.init();
