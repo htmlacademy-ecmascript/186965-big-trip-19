@@ -5,6 +5,8 @@ import EventTripPointView from '../../view/main/event-point-view.js';
 import EditTripPointView from '../../view/main/edit-event-point-view.js';
 import { WaypointMode } from '../../const.js';
 
+import { UserAction, UpdateType } from '../../const.js';
+
 export default class WaypointPresenter {
   #waypointsListComponent = null;
   #waypointComponent = null;
@@ -104,8 +106,13 @@ export default class WaypointPresenter {
     this.#replacePointToEditForm();
   };
 
+
   #formSubmit = (point) => {
-    this.#onWaypointDataChange(point);
+    this.#onWaypointDataChange(
+      UserAction.UPDATE_WAYPOINT,
+      UpdateType.MINOR,
+      point
+    );
     this.#replaceEditFormToPoint();
   };
 
@@ -115,6 +122,10 @@ export default class WaypointPresenter {
   };
 
   #clickFavouriteBtn = () => {
-    this.#onWaypointDataChange({ ...this.#waypoint, isFavourite: !this.#waypoint.isFavourite });
+    this.#onWaypointDataChange(
+      UserAction.UPDATE_WAYPOINT,
+      UpdateType.MINOR,
+      { ...this.#waypoint, isFavourite: !this.#waypoint.isFavourite }
+    );
   };
 }
