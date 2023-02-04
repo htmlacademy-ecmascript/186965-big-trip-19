@@ -9,9 +9,11 @@ import { tripsEventsContainerElement } from '../../main.js';
 import { SortType, UpdateType, UserAction } from '../../const.js';
 import { sortPointsByDay, sortPointsByTime, sortPointsByPrice } from '../../utils/sort.js';
 
+import { filter } from '../../utils/filter.js';
+
 export default class WaypointsListPresenter {
   #tripsList = null;
-  #pointsModel = null;
+  #pointModel = null;
 
   #waypointListComponent = new TripEventsListView();
   #waypointPresenter = new Map();
@@ -21,23 +23,32 @@ export default class WaypointsListPresenter {
 
   #noPointComponent = new NoPointView();
 
+  #filterModel = null;
 
-  constructor(tripsList, pointsModel) {
+
+  constructor({ tripsList, pointModel, filterModel }) {
     this.#tripsList = tripsList;
-    this.#pointsModel = pointsModel;
+    this.#pointModel = pointModel;
+    this.#filterModel = filterModel;
 
-    this.#pointsModel.addObserver(this.#handleModelEvent);
+    this.#pointModel.addObserver(this.#handleModelEvent);
+    this.#filterModel.addObserver(this.#handleModelEvent);
 
   }
 
   get points() {
+    const filterType = this.#filterModel.filter;
+    const points = this.#pointModel.points;
+    const filteredTasks = filter[filterType](points);
+
+
     switch (this.#currentSortType) {
       case SortType.TIME:
-        return [...this.#pointsModel.points].sort(sortPointsByTime);
+        return filteredTasks.sort(sortPointsByTime);
       case SortType.PRICE:
-        return [...this.#pointsModel.points].sort(sortPointsByPrice);
+        return filteredTasks.sort(sortPointsByPrice);
     }
-    return [...this.#pointsModel.points].sort(sortPointsByDay);
+    return filteredTasks.sort(sortPointsByDay);
   }
 
   init() {
@@ -124,13 +135,13 @@ export default class WaypointsListPresenter {
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_WAYPOINT:
-        this.#pointsModel.updateWaypoint(updateType, update);
+        this.#pointModel.updateWaypoint(updateType, update);
         break;
       case UserAction.ADD_WAYPOINT:
-        this.#pointsModel.addWaypoint(updateType, update);
+        this.#pointModel.addWaypoint(updateType, update);
         break;
       case UserAction.DELETE_WAYPOINT:
-        this.#pointsModel.deleteWaypoint(updateType, update);
+        this.#pointModel.deleteWaypoint(updateType, update);
         break;
     }
   };

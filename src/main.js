@@ -33,13 +33,20 @@ const filterPresenter = new FilterPresenter({
 });
 
 
-const headerPresenter = new HeaderPresenter(tripMainElement, pointModel);
+const headerPresenter = new HeaderPresenter({
+  headerContainer: tripMainElement,
+  pointModel
+});
 
-headerPresenter.init();
 filterPresenter.init();
+headerPresenter.init();
+
 
 //main
-const mainPresenter = new TripBoardPresenter(tripsEventsContainerElement);
+const mainPresenter = new TripBoardPresenter({
+  tripComponent: tripsEventsContainerElement,
+  filterModel: filterModel
+});
 
 mainPresenter.init();
 

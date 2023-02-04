@@ -7,24 +7,27 @@ import TripPointModel from '../../models/trip-point-model.js';
 
 export default class TripBoardPresenter {
   #tripComponent = null;
-  #pointsModel = null;
+  #pointModel = null;
+  #filterModel = null;
 
-  constructor(tripComponent) {
+  constructor({ tripComponent, filterModel }) {
     this.#tripComponent = tripComponent;
+    this.#filterModel = filterModel;
 
   }
 
   init() {
-    this.#pointsModel = new TripPointModel();
+    this.#pointModel = new TripPointModel();
 
     this.#renderWaypointsList();
   }
 
   #renderWaypointsList() {
-    const waypointListPresenter = new WaypointsListPresenter(
-      this.#tripComponent,
-      this.#pointsModel,
-    );
+    const waypointListPresenter = new WaypointsListPresenter({
+      tripsList: this.#tripComponent,
+      pointModel: this.#pointModel,
+      filterModel: this.#filterModel
+    });
 
     waypointListPresenter.init();
   }
