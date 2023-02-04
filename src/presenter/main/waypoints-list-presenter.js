@@ -1,7 +1,8 @@
 import WaypointPresenter from './waypoint-presenter.js';
-import NoPointView from '../../view/main/no-point-view.js';
+import NewPointPresenter from './new-point-presenter.js';
 import TripEventsListView from '../../view/main/trip-events-list-view.js';
 import TripSortView from '../../view/main/trip-sort-view.js';
+
 
 import { render, remove } from '../../framework/render.js';
 
@@ -26,14 +27,24 @@ export default class WaypointsListPresenter {
   #filterModel = null;
   #filterType = FilterType.ALL;
 
+  #newPointPresenter = null;
+  #onNewPointDestroy = null;
 
-  constructor({ tripsList, pointModel, filterModel }) {
+
+  constructor({ tripsList, pointModel, filterModel, onNewPointDestroy }) {
     this.#tripsList = tripsList;
     this.#pointModel = pointModel;
     this.#filterModel = filterModel;
+    this.#onNewPointDestroy = onNewPointDestroy;
 
     this.#pointModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
+
+    this.#newPointPresenter = new NewPointPresenter({
+      pointListContainer: this.#waypointListComponent.element,
+      onDataChange: this.#handleViewAction,
+      onDestroy: onNewPointDestroy
+    });
 
   }
 
@@ -53,9 +64,16 @@ export default class WaypointsListPresenter {
   }
 
   init() {
-
     this.#renderPointsList();
   }
+
+
+  createNewPoint() {
+    this.#currentSortType = SortType.DAY;
+    this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.ALL);
+    this.#newPointPresenter.init();
+  }
+
 
   #renderPoint(point) {
     const waypointPresenter = new WaypointPresenter({
@@ -95,6 +113,7 @@ export default class WaypointsListPresenter {
   }
 
   #handleWaypointModeChange = () => {
+    this.#newPointPresenter.destroy();
     this.#waypointPresenter.forEach((presenter) => presenter.resetView());
   };
 
@@ -123,6 +142,7 @@ export default class WaypointsListPresenter {
 
   #clearWaypointsList({ resetSortType = false } = {}) {
 
+    this.#newPointPresenter.destroy();
     this.#waypointPresenter.forEach((presenter) => presenter.destroy());
     this.#waypointPresenter.clear();
 

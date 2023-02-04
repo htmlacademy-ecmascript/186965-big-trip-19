@@ -45,7 +45,8 @@ headerPresenter.init();
 //main
 const mainPresenter = new TripBoardPresenter({
   tripComponent: tripsEventsContainerElement,
-  filterModel: filterModel
+  filterModel: filterModel,
+  headerContainer: tripMainElement
 });
 
 mainPresenter.init();
