@@ -3,7 +3,6 @@ import { DATE_TIME_EDIT_EVENT, POINT_TYPES } from '../../const.js';
 import { mockOffersTypes } from '../../mock/offers.js';
 import { mockDestinations } from '../../mock/destinations.js';
 
-
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
 
 
@@ -13,7 +12,6 @@ import 'flatpickr/dist/flatpickr.min.css';
 
 const getAllPointTypeOffers = (point) => {
   const { type } = point;
-
   const pointTypeOffer = mockOffersTypes.find((offer) => offer.type === type);
 
   return pointTypeOffer;
@@ -295,13 +293,6 @@ export default class EditTripPointView extends AbstractStatefulView {
   #onOfferCheckboxChange = (evt) => {
     evt.preventDefault();
 
-    const currentOffer = evt.target.checked ? 'true' : 'false';
-    console.log(this._state.offers)
-
-    // if (currentOffer) {
-    //   this.updateElement({
-    //   });
-    // }
   };
 
 
