@@ -6,7 +6,7 @@ import TripSortView from '../../view/main/trip-sort-view.js';
 import { render, remove } from '../../framework/render.js';
 
 import { tripsEventsContainerElement } from '../../main.js';
-import { SortType, UpdateType, UserAction } from '../../const.js';
+import { SortType, UpdateType, UserAction, FilterType } from '../../const.js';
 import { sortPointsByDay, sortPointsByTime, sortPointsByPrice } from '../../utils/sort.js';
 
 import { filter } from '../../utils/filter.js';
@@ -21,9 +21,10 @@ export default class WaypointsListPresenter {
   #sortComponent = null;
   #currentSortType = SortType.DAY;
 
-  #noPointComponent = new NoPointView();
+  #noPointComponent = null;
 
   #filterModel = null;
+  #filterType = FilterType.ALL;
 
 
   constructor({ tripsList, pointModel, filterModel }) {
@@ -37,9 +38,9 @@ export default class WaypointsListPresenter {
   }
 
   get points() {
-    const filterType = this.#filterModel.filter;
+    this.#filterType = this.#filterModel.filter;
     const points = this.#pointModel.points;
-    const filteredTasks = filter[filterType](points);
+    const filteredTasks = filter[this.#filterType](points);
 
 
     switch (this.#currentSortType) {
@@ -60,7 +61,8 @@ export default class WaypointsListPresenter {
     const waypointPresenter = new WaypointPresenter({
       waypointList: this.#waypointListComponent.element,
       onWaypointChange: this.#handleViewAction,
-      onWaypointModeChange: this.#handleWaypointModeChange
+      onWaypointModeChange: this.#handleWaypointModeChange,
+      filterType: this.#filterType
     });
 
     waypointPresenter.init(point);
@@ -125,7 +127,10 @@ export default class WaypointsListPresenter {
     this.#waypointPresenter.clear();
 
     remove(this.#sortComponent);
-    remove(this.#noPointComponent);
+
+    if (this.#noPointComponent) {
+      remove(this.#noPointComponent);
+    }
 
     if (resetSortType) {
       this.#currentSortType = SortType.DAY;

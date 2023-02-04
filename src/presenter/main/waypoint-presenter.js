@@ -18,12 +18,14 @@ export default class WaypointPresenter {
   #onWaypointModeChange = null;
 
   #mode = WaypointMode.DEFAULT;
+  #filterType = null;
 
 
-  constructor({ waypointList, onWaypointChange, onWaypointModeChange }) {
+  constructor({ waypointList, onWaypointChange, onWaypointModeChange, filterType }) {
     this.#waypointsListComponent = waypointList;
     this.#onWaypointDataChange = onWaypointChange;
     this.#onWaypointModeChange = onWaypointModeChange;
+    this.#filterType = filterType;
   }
 
 
