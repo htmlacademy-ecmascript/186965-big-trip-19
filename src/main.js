@@ -15,6 +15,14 @@ import { render, RenderPosition } from './framework/render.js';
 import { generateFilter } from './mock/filter.js';
 
 
+const filters = [
+  {
+    type: 'all',
+    name: 'ALL',
+    count: 0,
+  },
+];
+
 const tripMainElement = document.querySelector('.trip-main');
 const tripControlsFiltersElement = tripMainElement.querySelector('.trip-controls');
 const tripsEventsContainerElement = document.querySelector('.trip-events');
@@ -22,10 +30,14 @@ const tripsEventsContainerElement = document.querySelector('.trip-events');
 const pointModel = new TripPointModel();
 
 //header
-const filters = generateFilter(pointModel.points);
 
 render(new NewTripMainInfoBlockView(), tripMainElement, RenderPosition.AFTERBEGIN);
-render(new NewTripControlsFiltersView({ filters }), tripControlsFiltersElement);
+
+render(new NewTripControlsFiltersView({
+  filters,
+  currentFilterType: 'all',
+  onFilterTypeChange: () => { }
+}), tripControlsFiltersElement);
 
 const headerPresenter = new HeaderPresenter(tripMainElement, pointModel);
 
