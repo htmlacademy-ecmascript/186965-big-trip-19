@@ -6,6 +6,7 @@ import EditTripPointView from '../../view/main/edit-event-point-view.js';
 import { WaypointMode } from '../../const.js';
 
 import { UserAction, UpdateType } from '../../const.js';
+import { isDatesEqual } from '../../utils/point.js';
 
 export default class WaypointPresenter {
   #waypointsListComponent = null;
@@ -42,7 +43,8 @@ export default class WaypointPresenter {
     this.#waypointEditComponent = new EditTripPointView({
       point: this.#waypoint,
       onFormSubmit: this.#formSubmit,
-      onEditClickClose: this.#closeEditForm
+      onEditClickClose: this.#closeEditForm,
+      onDeleteClick: this.#handleDeleteClick
     });
 
 
@@ -107,13 +109,27 @@ export default class WaypointPresenter {
   };
 
 
-  #formSubmit = (point) => {
+  #formSubmit = (update) => {
+    const isDatesFromEqual = isDatesEqual(this.#waypoint.dateFrom, update.dateFrom);
+    const isDatesToEqual = isDatesEqual(this.#waypoint.dateTo, update.dateTo);
+    const isMinorUpdate = !isDatesFromEqual || !isDatesToEqual;
+    const updateType = isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH;
+
     this.#onWaypointDataChange(
       UserAction.UPDATE_WAYPOINT,
-      UpdateType.MINOR,
-      point
+      updateType,
+      update
     );
+
     this.#replaceEditFormToPoint();
+  };
+
+  #handleDeleteClick = (task) => {
+    this.#onWaypointDataChange(
+      UserAction.DELETE_WAYPOINT,
+      UpdateType.MINOR,
+      task
+    );
   };
 
   #closeEditForm = () => {

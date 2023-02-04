@@ -26,13 +26,14 @@ const allDestinationPictures = Object.values(mockDestinations);
 const createPointOffersTemplate = (point) => {
 
   const allPointTypeOffers = getAllPointTypeOffers(point);
+
   if (!allPointTypeOffers) {
     return [];
   }
 
   return allPointTypeOffers.offers.map((offer) => (
     `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${point.type}-${offer.id}" type="checkbox" name="event-offer-luggage" ${offer.checked ? 'checked' : ''}>
+      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${point.type}-${offer.id}" type="checkbox" name="event-offer-luggage" ${offer.checked ? 'checked' : ''} value="${offer.id}">
       <label class="event__offer-label" for="event-offer-${point.type}-${offer.id}">
         <span class="event__offer-title">${offer.title}</span>
         +€&nbsp;
@@ -158,11 +159,14 @@ export default class EditTripPointView extends AbstractStatefulView {
   #datepickerForm = null;
   #datepickerTo = null;
 
-  constructor({ point, onFormSubmit, onEditClickClose }) {
+  #handleDeleteClick = null;
+
+  constructor({ point, onFormSubmit, onEditClickClose, onDeleteClick }) {
     super();
     this._setState(EditTripPointView.parsePointToState(point));
     this.#onFormSubmit = onFormSubmit;
     this.#onEditArrowClickClose = onEditClickClose;
+    this.#handleDeleteClick = onDeleteClick;
 
     this._restoreHandlers();
 
@@ -173,23 +177,27 @@ export default class EditTripPointView extends AbstractStatefulView {
   }
 
   _restoreHandlers() {
-    this.element.querySelector('.event--edit').addEventListener('submit', this.#closePointFormEdit);
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closePointEditForm);
+    this.element.querySelector('.event--edit').addEventListener('submit', this.#onClosePointFormEdit);
+    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onClosePointEditForm);
     this.element.querySelector('.event__type-group').addEventListener('click', this.#onEventPointChange);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#onDestinationChange);
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#onFormDeleteClick);
+
+    this.element.querySelector('.event__available-offers').addEventListener('change', this.#onOfferCheckboxChange);
+    this.element.querySelector('.event__input--price').addEventListener('change', this.#onPriceChange);
 
     this.#setDatepickerDateForm();
     this.#setDatepickerDateTo();
 
   }
 
-  #closePointFormEdit = (evt) => {
+  #onClosePointFormEdit = (evt) => {
     evt.preventDefault();
     this.#onFormSubmit(EditTripPointView.parseStateToPoint(this._state));
   };
 
 
-  #closePointEditForm = (evt) => {
+  #onClosePointEditForm = (evt) => {
     evt.preventDefault();
     this.#onEditArrowClickClose(EditTripPointView.parsePointToState(this._state));
   };
@@ -277,6 +285,34 @@ export default class EditTripPointView extends AbstractStatefulView {
     );
 
   }
+
+  #onFormDeleteClick = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(EditTripPointView.parsePointToState(this._state));
+  };
+
+
+  #onOfferCheckboxChange = (evt) => {
+    evt.preventDefault();
+
+    const currentOffer = evt.target.checked ? 'true' : 'false';
+    console.log(this._state.offers)
+
+    // if (currentOffer) {
+    //   this.updateElement({
+    //   });
+    // }
+  };
+
+
+  #onPriceChange = (evt) => {
+    evt.preventDefault();
+
+    this.updateElement({
+      basePrice: evt.target.value
+    });
+  };
+
 
   static parsePointToState(point) {
     return { ...point };
