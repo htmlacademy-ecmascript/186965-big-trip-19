@@ -8,8 +8,6 @@ import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js
 
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
-import { AVAILABLE_CITIES } from '../../mock/cities.js';
-
 
 const getAllPointTypeOffers = (point) => {
   const { type } = point;
