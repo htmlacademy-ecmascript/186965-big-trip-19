@@ -8,6 +8,7 @@ import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js
 
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
+import { AVAILABLE_CITIES } from '../../mock/cities.js';
 
 
 const getAllPointTypeOffers = (point) => {
@@ -114,7 +115,7 @@ const createEditEventPointTemplate = (point) => {
           <span class="visually-hidden">${basePrice}</span>
           €
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
+        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${basePrice}">
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
@@ -184,6 +185,7 @@ export default class EditTripPointView extends AbstractStatefulView {
     this.element.querySelector('.event__available-offers').addEventListener('change', this.#onOfferCheckboxChange);
     this.element.querySelector('.event__input--price').addEventListener('change', this.#onPriceChange);
 
+
     this.#setDatepickerDateForm();
     this.#setDatepickerDateTo();
 
@@ -216,11 +218,15 @@ export default class EditTripPointView extends AbstractStatefulView {
 
     const selectedDestination = allDestinationsValues.find((destination) => evt.target.value === destination.name);
 
-    this.updateElement({
-      destinationName: evt.target.value,
-      destination: selectedDestination.description
-    });
-
+    if (selectedDestination) {
+      this.updateElement({
+        destinationName: evt.target.value,
+        destination: selectedDestination.description
+      });
+    } else {
+      evt.target.value = '';
+      evt.target.placeholder = 'choose city from the list below';
+    }
   };
 
   reset(point) {
@@ -299,11 +305,17 @@ export default class EditTripPointView extends AbstractStatefulView {
   #onPriceChange = (evt) => {
     evt.preventDefault();
 
-    this.updateElement({
-      basePrice: evt.target.value
-    });
-  };
+    const writtenPrice = +evt.target.value;
 
+    if (writtenPrice < 0) {
+      this.element.querySelector('.event__save-btn').disabled = true;
+    } else {
+      this.element.querySelector('.event__save-btn').disabled = false;
+      this.updateElement({
+        basePrice: evt.target.value
+      });
+    }
+  };
 
   static parsePointToState(point) {
     return { ...point };

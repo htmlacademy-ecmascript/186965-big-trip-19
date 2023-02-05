@@ -28,14 +28,13 @@ export default class WaypointsListPresenter {
   #filterType = FilterType.ALL;
 
   #newPointPresenter = null;
-  #onNewPointDestroy = null;
-
+  #handleNewPointDestroy = null;
 
   constructor({ tripsList, pointModel, filterModel, onNewPointDestroy }) {
     this.#tripsList = tripsList;
     this.#pointModel = pointModel;
     this.#filterModel = filterModel;
-    this.#onNewPointDestroy = onNewPointDestroy;
+    this.#handleNewPointDestroy = onNewPointDestroy;
 
     this.#pointModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
@@ -43,7 +42,7 @@ export default class WaypointsListPresenter {
     this.#newPointPresenter = new NewPointPresenter({
       pointListContainer: this.#waypointListComponent.element,
       onDataChange: this.#handleViewAction,
-      onDestroy: onNewPointDestroy
+      onDestroy: this.#handleNewPointDestroy
     });
 
   }

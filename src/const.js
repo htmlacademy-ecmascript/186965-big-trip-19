@@ -54,4 +54,5 @@ const NoPointTextType = {
   [FilterType.PAST]: 'There are no past events now',
 };
 
+
 export { POINT_TYPES, OFFERS, TRIP_EVENTS_AMOUNT, START_DATE_FORMAT, DATE_TIME_EVENT, DATE_TIME_EDIT_EVENT, DATE_TIME, MINUTES_PER_HOUR, MINUTES_PER_DAY, FilterType, MULTIPLE_DOTS, MAX_VISIBLE_CITIES_COUNT, DATE, WaypointMode, SortType, UserAction, UpdateType, NoPointTextType };

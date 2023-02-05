@@ -1,6 +1,7 @@
 import AbstractView from '../../framework/view/abstract-view.js';
 import { MULTIPLE_DOTS, MAX_VISIBLE_CITIES_COUNT, DATE, START_DATE_FORMAT } from '../../const.js';
 import { humanizeDate } from '../../utils/point.js';
+import { AVAILABLE_CITIES } from '../../mock/cities.js';
 
 
 const createTripInfoMainTemplate = (waypoints) => {
