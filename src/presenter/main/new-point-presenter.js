@@ -1,5 +1,5 @@
 import { remove, render, RenderPosition } from '../../framework/render.js';
-import EditTripPointView from '../../view/main/new-point-view.js';
+import EditTripPointView from '../../view/main/edit-event-point-view.js';
 import { nanoid } from 'nanoid';
 import { UserAction, UpdateType } from '../../const.js';
 
@@ -25,7 +25,8 @@ export default class NewPointPresenter {
 
     this.#pointEditComponent = new EditTripPointView({
       onFormSubmit: this.#handleFormSubmit,
-      onDeleteClick: this.#handleDeleteClick
+      onDeleteClick: this.#handleDeleteClick,
+      isEditMode: false
     });
 
     render(this.#pointEditComponent, this.#pointListContainer, RenderPosition.AFTERBEGIN);
@@ -48,7 +49,7 @@ export default class NewPointPresenter {
 
   #handleFormSubmit = (point) => {
     this.#handleDataChange(
-      UserAction.ADD_TASK,
+      UserAction.ADD_WAYPOINT,
       UpdateType.MINOR,
       // Пока у нас нет сервера, который бы после сохранения
       // выдывал честный id задачи, нам нужно позаботиться об этом самим

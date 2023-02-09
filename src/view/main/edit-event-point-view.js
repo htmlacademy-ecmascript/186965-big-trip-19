@@ -9,6 +9,18 @@ import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
+
+const DEFAULT_POINT = {
+  'basePrice': 60,
+  'dateFrom': '2023-05-10T19:32:06.845Z',
+  'dateTo': '2023-05-11T10:22:06.845Z',
+  'destinationName': 'New-York',
+  'destination': 'New York, often called New York City or NYC, is the most populous city in the United States. With a 2020 population of 8,804,190 distributed over 300.46 square miles (778.2 km2), New York City is the most densely populated major city in the United States and more than twice as populous as Los Angeles, the nation`s second largest city',
+  'offers': [],
+  'type': 'flight'
+};
+
+
 const getAllPointTypeOffers = (point) => {
   const { type } = point;
   const pointTypeOffer = mockOffersTypes.find((offer) => offer.type === type);
@@ -17,7 +29,7 @@ const getAllPointTypeOffers = (point) => {
 };
 
 const allDestinationsValues = Object.values(mockDestinations);
-const allDestinationPictures = Object.values(mockDestinations);
+// const allDestinationPictures = Object.values(mockDestinations);
 
 
 const createPointOffersTemplate = (point) => {
@@ -52,17 +64,17 @@ const createPointEventTemplate = (currentType) => {
 const createDestinationsTemplate = () => allDestinationsValues.map((destination) => `<option value="${destination.name}"></option>`).join('');
 
 
-const createDestinationPicturesTemplate = (point) => {
-  const { destinationName } = point;
+// const createDestinationPicturesTemplate = (point) => {
+//   const { destinationName } = point;
 
-  const destinationPictures = allDestinationPictures.find((item) => destinationName === item.name);
+//   const destinationPictures = allDestinationPictures.find((item) => destinationName === item.name);
 
-  return destinationPictures.pictures.map((picture) => `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`).join('');
+//   return destinationPictures.pictures.map((picture) => `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`).join('');
 
-};
+// };
 
 
-const createEditEventPointTemplate = (point) => {
+const createEditEventPointTemplate = (point, isEditMode) => {
   const { dateFrom, type, basePrice, dateTo, destinationName, destination } = point;
 
   const dateFromEvent = humanizeDate(dateFrom, DATE_TIME_EDIT_EVENT);
@@ -71,8 +83,9 @@ const createEditEventPointTemplate = (point) => {
   const repeatingOfferTemplate = createPointOffersTemplate(point);
   const createPointTypeTemplate = createPointEventTemplate(type);
   const destinationTemplate = createDestinationsTemplate();
-  const picturesTemplate = createDestinationPicturesTemplate(point);
+  // const picturesTemplate = createDestinationPicturesTemplate(point);
 
+  const getRollupBtn = () => isEditMode ? '<button class="event__rollup-btn" type="button"></button>' : '';
 
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -117,10 +130,8 @@ const createEditEventPointTemplate = (point) => {
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">Delete</button>
-      <button class="event__rollup-btn" type="button">
-        <span class="visually-hidden">Open event</span>
-      </button>
+      <button class="event__reset-btn" type="reset">${isEditMode ? 'Delete' : 'Cancel'}</button>
+      ${getRollupBtn()}
     </header>
     <section class="event__details">
       <section class="event__section  event__section--offers">
@@ -139,7 +150,7 @@ ${repeatingOfferTemplate}
         <p class="event__destination-description"> ${destination}</p>
         <div class="event__photos-container">
                       <div class="event__photos-tape">
-                        ${picturesTemplate}
+
                       </div>
                     </div>
       </section>
@@ -157,25 +168,27 @@ export default class EditTripPointView extends AbstractStatefulView {
   #datepickerTo = null;
 
   #handleDeleteClick = null;
+  #isEditMode = null;
 
-  constructor({ point, onFormSubmit, onEditClickClose, onDeleteClick }) {
+  constructor({ point = DEFAULT_POINT, onFormSubmit, onEditClickClose, onDeleteClick, isEditMode = true }) {
     super();
     this._setState(EditTripPointView.parsePointToState(point));
     this.#onFormSubmit = onFormSubmit;
     this.#onEditArrowClickClose = onEditClickClose;
     this.#handleDeleteClick = onDeleteClick;
+    this.#isEditMode = isEditMode;
 
     this._restoreHandlers();
 
   }
 
   get template() {
-    return createEditEventPointTemplate(this._state);
+    return createEditEventPointTemplate(this._state, this.#isEditMode);
   }
 
   _restoreHandlers() {
     this.element.querySelector('.event--edit').addEventListener('submit', this.#onClosePointFormEdit);
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#onClosePointEditForm);
+    this.element.querySelector('.event__rollup-btn')?.addEventListener('click', this.#onClosePointEditForm);
     this.element.querySelector('.event__type-group').addEventListener('click', this.#onEventPointChange);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#onDestinationChange);
     this.element.querySelector('.event__reset-btn').addEventListener('click', this.#onFormDeleteClick);

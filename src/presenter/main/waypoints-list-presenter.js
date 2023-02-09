@@ -12,6 +12,7 @@ import { sortPointsByDay, sortPointsByTime, sortPointsByPrice } from '../../util
 
 import { filter } from '../../utils/filter.js';
 
+
 export default class WaypointsListPresenter {
   #tripsList = null;
   #pointModel = null;
@@ -68,6 +69,7 @@ export default class WaypointsListPresenter {
 
 
   createNewPoint() {
+
     this.#currentSortType = SortType.DAY;
     this.#filterModel.setFilter(UpdateType.MAJOR, FilterType.ALL);
     this.#newPointPresenter.init();
