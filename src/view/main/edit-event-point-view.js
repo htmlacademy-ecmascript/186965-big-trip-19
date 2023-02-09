@@ -40,7 +40,9 @@ const createPointOffersTemplate = (point) => {
     return [];
   }
 
+
   return allPointTypeOffers.offers.map((offer) => (
+
     `<div class="event__offer-selector">
       <input class="event__offer-checkbox  visually-hidden" id="event-offer-${point.type}-${offer.id}" type="checkbox" name="event-offer-luggage" ${offer.checked ? 'checked' : ''} value="${offer.id}">
       <label class="event__offer-label" for="event-offer-${point.type}-${offer.id}">
@@ -72,6 +74,17 @@ const createDestinationsTemplate = () => allDestinationsValues.map((destination)
 //   return destinationPictures.pictures.map((picture) => `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`).join('');
 
 // };
+
+
+const getCheckedOffers = (point) => {
+  const allPointTypeOffers = getAllPointTypeOffers(point);
+  const checkedOffersId = [];
+
+  allPointTypeOffers.offers.map((offer) => offer.checked ? checkedOffersId.push(offer.id) : '');
+
+  return checkedOffersId;
+
+};
 
 
 const createEditEventPointTemplate = (point, isEditMode) => {
@@ -179,6 +192,8 @@ export default class EditTripPointView extends AbstractStatefulView {
     this.#isEditMode = isEditMode;
 
     this._restoreHandlers();
+
+    console.log(this._state);
 
   }
 
@@ -310,6 +325,22 @@ export default class EditTripPointView extends AbstractStatefulView {
   #onOfferCheckboxChange = (evt) => {
     evt.preventDefault();
 
+    const currentOfferId = +evt.target.value;
+    const selectedOffers = this._state.offers;
+    // console.log(selectedOffers)
+
+    const checkOffersId = selectedOffers.includes(currentOfferId);
+
+    if (!checkOffersId) {
+      selectedOffers.push(currentOfferId);
+    }
+
+    // console.log(selectedOffers)
+
+    this.updateElement({
+      offers: selectedOffers
+    });
+
   };
 
 
@@ -329,11 +360,16 @@ export default class EditTripPointView extends AbstractStatefulView {
   };
 
   static parsePointToState(point) {
-    return { ...point };
+    return {
+      ...point,
+      offers: getCheckedOffers(point)
+    };
   }
 
   static parseStateToPoint(state) {
-    return { ...state };
+    return {
+      ...state,
+    };
 
   }
 
