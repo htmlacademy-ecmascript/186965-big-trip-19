@@ -5,6 +5,9 @@ import EventTripPointView from '../../view/main/event-point-view.js';
 import EditTripPointView from '../../view/main/edit-event-point-view.js';
 import { WaypointMode } from '../../const.js';
 
+import { UserAction, UpdateType } from '../../const.js';
+import { isDatesEqual } from '../../utils/point.js';
+
 export default class WaypointPresenter {
   #waypointsListComponent = null;
   #waypointComponent = null;
@@ -15,12 +18,14 @@ export default class WaypointPresenter {
   #onWaypointModeChange = null;
 
   #mode = WaypointMode.DEFAULT;
+  #filterType = null;
 
 
-  constructor({ waypointList, onWaypointChange, onWaypointModeChange }) {
+  constructor({ waypointList, onWaypointChange, onWaypointModeChange, filterType }) {
     this.#waypointsListComponent = waypointList;
     this.#onWaypointDataChange = onWaypointChange;
     this.#onWaypointModeChange = onWaypointModeChange;
+    this.#filterType = filterType;
   }
 
 
@@ -40,7 +45,8 @@ export default class WaypointPresenter {
     this.#waypointEditComponent = new EditTripPointView({
       point: this.#waypoint,
       onFormSubmit: this.#formSubmit,
-      onEditClickClose: this.#closeEditForm
+      onEditClickClose: this.#closeEditForm,
+      onDeleteClick: this.#handleDeleteClick
     });
 
 
@@ -104,9 +110,28 @@ export default class WaypointPresenter {
     this.#replacePointToEditForm();
   };
 
-  #formSubmit = (point) => {
-    this.#onWaypointDataChange(point);
+
+  #formSubmit = (update) => {
+    const isDatesFromEqual = isDatesEqual(this.#waypoint.dateFrom, update.dateFrom);
+    const isDatesToEqual = isDatesEqual(this.#waypoint.dateTo, update.dateTo);
+    const isMinorUpdate = !isDatesFromEqual || !isDatesToEqual;
+    const updateType = isMinorUpdate ? UpdateType.MINOR : UpdateType.PATCH;
+
+    this.#onWaypointDataChange(
+      UserAction.UPDATE_WAYPOINT,
+      updateType,
+      update
+    );
+
     this.#replaceEditFormToPoint();
+  };
+
+  #handleDeleteClick = (task) => {
+    this.#onWaypointDataChange(
+      UserAction.DELETE_WAYPOINT,
+      UpdateType.MINOR,
+      task
+    );
   };
 
   #closeEditForm = () => {
@@ -115,6 +140,10 @@ export default class WaypointPresenter {
   };
 
   #clickFavouriteBtn = () => {
-    this.#onWaypointDataChange({ ...this.#waypoint, isFavourite: !this.#waypoint.isFavourite });
+    this.#onWaypointDataChange(
+      UserAction.UPDATE_WAYPOINT,
+      UpdateType.MINOR,
+      { ...this.#waypoint, isFavourite: !this.#waypoint.isFavourite }
+    );
   };
 }
