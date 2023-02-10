@@ -12,13 +12,20 @@ import FilterModel from './models/filter-model.js';
 
 import { render, RenderPosition } from './framework/render.js';
 
-//mock
+import PointApiService from './points-api-service.js';
+
+const AUTHORIZATION = 'Basic QRHZ8VOva8N0OPa4';
+const END_POINT = 'https://19.ecmascript.pages.academy/big-trip/';
+
 
 const tripMainElement = document.querySelector('.trip-main');
 const tripControlsFiltersElement = tripMainElement.querySelector('.trip-controls');
 const tripsEventsContainerElement = document.querySelector('.trip-events');
 
-const pointModel = new TripPointModel();
+const pointModel = new TripPointModel({
+  pointApiService: new PointApiService(END_POINT, AUTHORIZATION)
+});
+
 const filterModel = new FilterModel();
 
 //header

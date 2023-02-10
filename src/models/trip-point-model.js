@@ -6,7 +6,17 @@ import { getRandomPoint } from '../mock/points.js';
 const POINT_NUMBER = 4;
 
 export default class TripPointModel extends Observable {
+  #pointApiService = null;
   #points = Array.from({ length: POINT_NUMBER }, getRandomPoint);
+
+  constructor({ pointApiService }) {
+    super();
+    this.#pointApiService = pointApiService;
+
+    this.#pointApiService.points.then((points) => {
+      console.log(points)
+    });
+  }
 
   get points() {
     return this.#points;
