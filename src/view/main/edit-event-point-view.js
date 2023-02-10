@@ -193,7 +193,6 @@ export default class EditTripPointView extends AbstractStatefulView {
 
     this._restoreHandlers();
 
-    console.log(this._state);
 
   }
 
@@ -220,6 +219,7 @@ export default class EditTripPointView extends AbstractStatefulView {
   #onClosePointFormEdit = (evt) => {
     evt.preventDefault();
     this.#onFormSubmit(EditTripPointView.parseStateToPoint(this._state));
+
   };
 
 
@@ -337,9 +337,9 @@ export default class EditTripPointView extends AbstractStatefulView {
 
     // console.log(selectedOffers)
 
-    this.updateElement({
-      offers: selectedOffers
-    });
+    // this.updateElement({
+    //   offers: selectedOffers
+    // });
 
   };
 
@@ -360,10 +360,12 @@ export default class EditTripPointView extends AbstractStatefulView {
   };
 
   static parsePointToState(point) {
+
     return {
       ...point,
       offers: getCheckedOffers(point)
     };
+
   }
 
   static parseStateToPoint(state) {
