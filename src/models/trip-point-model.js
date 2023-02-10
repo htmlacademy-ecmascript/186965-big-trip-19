@@ -6,15 +6,16 @@ import { getRandomPoint } from '../mock/points.js';
 const POINT_NUMBER = 4;
 
 export default class TripPointModel extends Observable {
-  #pointApiService = null;
+  #pointsApiService = null;
   #points = Array.from({ length: POINT_NUMBER }, getRandomPoint);
 
-  constructor({ pointApiService }) {
+  constructor({ pointsApiService }) {
     super();
-    this.#pointApiService = pointApiService;
 
-    this.#pointApiService.points.then((points) => {
-      console.log(points)
+    this.#pointsApiService = pointsApiService;
+
+    this.#pointsApiService.points.then((points) => {
+      console.log(points.map(this.#adaptToClient));
     });
   }
 
@@ -60,6 +61,22 @@ export default class TripPointModel extends Observable {
     ];
 
     this._notify(updateType);
+  }
+
+  #adaptToClient(point) {
+    const adaptedPoint = {
+      ...point,
+      dateFrom: point['date_from'] !== null ? new Date(point['date_from']) : point['date_from'], // На клиенте дата хранится как экземпляр Date
+      dateTo: point['date_to'] !== null ? new Date(point['date_to']) : point['date_to'], // На клиенте дата хранится как экземпляр Date
+      isFavorite: point['is_favorite'],
+    };
+
+    // Ненужные ключи мы удаляем
+    delete adaptedPoint['date_from'];
+    delete adaptedPoint['date_to'];
+    delete adaptedPoint['is_favorite'];
+
+    return adaptedPoint;
   }
 }
 

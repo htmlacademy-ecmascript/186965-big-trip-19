@@ -23,7 +23,7 @@ const tripControlsFiltersElement = tripMainElement.querySelector('.trip-controls
 const tripsEventsContainerElement = document.querySelector('.trip-events');
 
 const pointModel = new TripPointModel({
-  pointApiService: new PointApiService(END_POINT, AUTHORIZATION)
+  pointsApiService: new PointApiService(END_POINT, AUTHORIZATION)
 });
 
 const filterModel = new FilterModel();
