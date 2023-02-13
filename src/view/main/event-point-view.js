@@ -1,7 +1,6 @@
 
 import { humanizeDate, getTripDuration } from '../../utils/point.js';
 import { START_DATE_FORMAT, DATE_TIME_EVENT, DATE_TIME } from '../../const.js';
-import { mockOffersTypes } from '../../mock/offers.js';
 
 
 import AbstractView from '../../framework/view/abstract-view.js';

@@ -2,7 +2,6 @@
 import NewTripInfoMainView from '../../view/header/trip-main-info-view.js';
 import NewTripInfoCostView from '../../view/header/trip-info-cost-view.js';
 
-
 import { render } from '../../framework/render.js';
 
 
@@ -11,7 +10,8 @@ export default class HeaderPresenter {
   #pointsModel = null;
   #tripPoints = [];
 
-  constructor(headerContainer, pointsModel) {
+
+  constructor({ headerContainer, pointsModel }) {
     this.#headerContainer = headerContainer;
     this.#pointsModel = pointsModel;
   }

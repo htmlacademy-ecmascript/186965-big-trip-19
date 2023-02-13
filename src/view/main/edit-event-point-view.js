@@ -1,7 +1,5 @@
 import { humanizeDate } from '../../utils/point.js';
 import { DATE_TIME_EDIT_EVENT, POINT_TYPES } from '../../const.js';
-import { mockOffersTypes } from '../../mock/offers.js';
-import { mockDestinations } from '../../mock/destinations.js';
 
 
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
@@ -11,70 +9,95 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 
 
-const getAllPointTypeOffers = (point) => {
-  const { type } = point;
-
-  const pointTypeOffer = mockOffersTypes.find((offer) => offer.type === type);
-
-  return pointTypeOffer;
-};
-
-const allDestinationsValues = Object.values(mockDestinations);
-const allDestinationPictures = Object.values(mockDestinations);
-
-
-const createPointOffersTemplate = (point) => {
-
-  const allPointTypeOffers = getAllPointTypeOffers(point);
-  if (!allPointTypeOffers) {
-    return [];
-  }
-
-  return allPointTypeOffers.offers.map((offer) => (
-    `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${point.type}-${offer.id}" type="checkbox" name="event-offer-luggage" ${offer.checked ? 'checked' : ''}>
-      <label class="event__offer-label" for="event-offer-${point.type}-${offer.id}">
-        <span class="event__offer-title">${offer.title}</span>
-        +€&nbsp;
-        <span class="event__offer-price">${offer.price}</span>
-      </label>
-    </div> `)).join('');
-};
-
-const createPointEventTemplate = (currentType) => {
-  const pointEventItem = POINT_TYPES.map((item) => (`<div class="event__type-item">
-    <input id="event-${item}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item}" ${item === currentType ? 'checked' : ''}>
-    <label class="event__type-label  event__type-label--${item}" for="event-type--${item}-1">${item}</label>
-  </div>`)
-  ).join('');
-
-  return pointEventItem;
-};
-
-const createDestinationsTemplate = () => allDestinationsValues.map((destination) => `<option value="${destination.name}"></option>`).join('');
-
-
-const createDestinationPicturesTemplate = (point) => {
-  const { destinationName } = point;
-
-  const destinationPictures = allDestinationPictures.find((item) => destinationName === item.name);
-
-  return destinationPictures.pictures.map((picture) => `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`).join('');
-
+const DEFAULT_POINT = {
+  'basePrice': 60,
+  'dateFrom': '2023-05-10T19:32:06.845Z',
+  'dateTo': '2023-05-11T10:22:06.845Z',
+  'destinationName': 'New-York',
+  'destination': 'New York, often called New York City or NYC, is the most populous city in the United States. With a 2020 population of 8,804,190 distributed over 300.46 square miles (778.2 km2), New York City is the most densely populated major city in the United States and more than twice as populous as Los Angeles, the nation`s second largest city',
+  'offers': [],
+  'type': 'flight'
 };
 
 
-const createEditEventPointTemplate = (point) => {
+// const getAllPointTypeOffers = (point) => {
+//   const { type } = point;
+//   const pointTypeOffer = mockOffersTypes.find((offer) => offer.type === type);
+
+//   return pointTypeOffer;
+// };
+
+// const allDestinationsValues = Object.values(mockDestinations);
+// const allDestinationPictures = Object.values(mockDestinations);
+
+
+// const createPointOffersTemplate = (point) => {
+
+//   const allPointTypeOffers = getAllPointTypeOffers(point);
+
+//   if (!allPointTypeOffers) {
+//     return [];
+//   }
+
+
+//   return allPointTypeOffers.offers.map((offer) => (
+
+//     `<div class="event__offer-selector">
+//       <input class="event__offer-checkbox  visually-hidden" id="event-offer-${point.type}-${offer.id}" type="checkbox" name="event-offer-luggage" ${offer.checked ? 'checked' : ''} value="${offer.id}">
+//       <label class="event__offer-label" for="event-offer-${point.type}-${offer.id}">
+//         <span class="event__offer-title">${offer.title}</span>
+//         +€&nbsp;
+//         <span class="event__offer-price">${offer.price}</span>
+//       </label>
+//     </div> `)).join('');
+// };
+
+// const createPointEventTemplate = (currentType) => {
+//   const pointEventItem = POINT_TYPES.map((item) => (`<div class="event__type-item">
+//     <input id="event-${item}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item}" ${item === currentType ? 'checked' : ''}>
+//     <label class="event__type-label  event__type-label--${item}" for="event-type--${item}-1">${item}</label>
+//   </div>`)
+//   ).join('');
+
+//   return pointEventItem;
+// };
+
+// const createDestinationsTemplate = () => allDestinationsValues.map((destination) => `<option value="${destination.name}"></option>`).join('');
+
+
+// const createDestinationPicturesTemplate = (point) => {
+//   const { destinationName } = point;
+
+//   const destinationPictures = allDestinationPictures.find((item) => destinationName === item.name);
+
+//   return destinationPictures.pictures.map((picture) => `<img class="event__photo" src="${picture.src}" alt="${picture.description}">`).join('');
+
+// };
+
+
+// const getCheckedOffers = (point) => {
+//   const allPointTypeOffers = getAllPointTypeOffers(point);
+//   const checkedOffersId = [];
+
+//   allPointTypeOffers.offers.map((offer) => offer.checked ? checkedOffersId.push(offer.id) : '');
+
+//   return checkedOffersId;
+
+// };
+
+
+const createEditEventPointTemplate = (point, isEditMode) => {
   const { dateFrom, type, basePrice, dateTo, destinationName, destination } = point;
 
   const dateFromEvent = humanizeDate(dateFrom, DATE_TIME_EDIT_EVENT);
   const dateToEvent = humanizeDate(dateTo, DATE_TIME_EDIT_EVENT);
 
-  const repeatingOfferTemplate = createPointOffersTemplate(point);
-  const createPointTypeTemplate = createPointEventTemplate(type);
-  const destinationTemplate = createDestinationsTemplate();
-  const picturesTemplate = createDestinationPicturesTemplate(point);
+  // const repeatingOfferTemplate = createPointOffersTemplate(point);
+  // const createPointTypeTemplate = createPointEventTemplate(type);
+  // const destinationTemplate = createDestinationsTemplate();
+  // const picturesTemplate = createDestinationPicturesTemplate(point);
 
+  const getRollupBtn = () => isEditMode ? '<button class="event__rollup-btn" type="button"></button>' : '';
 
   return `<li class="trip-events__item">
   <form class="event event--edit" action="#" method="post">
@@ -115,14 +138,12 @@ const createEditEventPointTemplate = (point) => {
           <span class="visually-hidden">${basePrice}</span>
           €
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${basePrice}">
+        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${basePrice}">
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
-      <button class="event__reset-btn" type="reset">Delete</button>
-      <button class="event__rollup-btn" type="button">
-        <span class="visually-hidden">Open event</span>
-      </button>
+      <button class="event__reset-btn" type="reset">${isEditMode ? 'Delete' : 'Cancel'}</button>
+      ${getRollupBtn()}
     </header>
     <section class="event__details">
       <section class="event__section  event__section--offers">
@@ -141,7 +162,7 @@ ${repeatingOfferTemplate}
         <p class="event__destination-description"> ${destination}</p>
         <div class="event__photos-container">
                       <div class="event__photos-tape">
-                        ${picturesTemplate}
+
                       </div>
                     </div>
       </section>
@@ -158,38 +179,50 @@ export default class EditTripPointView extends AbstractStatefulView {
   #datepickerForm = null;
   #datepickerTo = null;
 
-  constructor({ point, onFormSubmit, onEditClickClose }) {
+  #handleDeleteClick = null;
+  #isEditMode = null;
+
+  constructor({ point = DEFAULT_POINT, onFormSubmit, onEditClickClose, onDeleteClick, isEditMode = true }) {
     super();
     this._setState(EditTripPointView.parsePointToState(point));
     this.#onFormSubmit = onFormSubmit;
     this.#onEditArrowClickClose = onEditClickClose;
+    this.#handleDeleteClick = onDeleteClick;
+    this.#isEditMode = isEditMode;
 
     this._restoreHandlers();
+
 
   }
 
   get template() {
-    return createEditEventPointTemplate(this._state);
+    return createEditEventPointTemplate(this._state, this.#isEditMode);
   }
 
   _restoreHandlers() {
-    this.element.querySelector('.event--edit').addEventListener('submit', this.#closePointFormEdit);
-    this.element.querySelector('.event__rollup-btn').addEventListener('click', this.#closePointEditForm);
+    this.element.querySelector('.event--edit').addEventListener('submit', this.#onClosePointFormEdit);
+    this.element.querySelector('.event__rollup-btn')?.addEventListener('click', this.#onClosePointEditForm);
     this.element.querySelector('.event__type-group').addEventListener('click', this.#onEventPointChange);
     this.element.querySelector('.event__input--destination').addEventListener('change', this.#onDestinationChange);
+    this.element.querySelector('.event__reset-btn').addEventListener('click', this.#onFormDeleteClick);
+
+    this.element.querySelector('.event__available-offers').addEventListener('change', this.#onOfferCheckboxChange);
+    this.element.querySelector('.event__input--price').addEventListener('change', this.#onPriceChange);
+
 
     this.#setDatepickerDateForm();
     this.#setDatepickerDateTo();
 
   }
 
-  #closePointFormEdit = (evt) => {
+  #onClosePointFormEdit = (evt) => {
     evt.preventDefault();
     this.#onFormSubmit(EditTripPointView.parseStateToPoint(this._state));
+
   };
 
 
-  #closePointEditForm = (evt) => {
+  #onClosePointEditForm = (evt) => {
     evt.preventDefault();
     this.#onEditArrowClickClose(EditTripPointView.parsePointToState(this._state));
   };
@@ -210,11 +243,15 @@ export default class EditTripPointView extends AbstractStatefulView {
 
     const selectedDestination = allDestinationsValues.find((destination) => evt.target.value === destination.name);
 
-    this.updateElement({
-      destinationName: evt.target.value,
-      destination: selectedDestination.description
-    });
-
+    if (selectedDestination) {
+      this.updateElement({
+        destinationName: evt.target.value,
+        destination: selectedDestination.description
+      });
+    } else {
+      evt.target.value = '';
+      evt.target.placeholder = 'choose city from the list below';
+    }
   };
 
   reset(point) {
@@ -278,13 +315,62 @@ export default class EditTripPointView extends AbstractStatefulView {
 
   }
 
-  static parsePointToState(point) {
-    return { ...point };
-  }
+  #onFormDeleteClick = (evt) => {
+    evt.preventDefault();
+    this.#handleDeleteClick(EditTripPointView.parsePointToState(this._state));
+  };
 
-  static parseStateToPoint(state) {
-    return { ...state };
 
-  }
+  #onOfferCheckboxChange = (evt) => {
+    evt.preventDefault();
+
+    const currentOfferId = +evt.target.value;
+    const selectedOffers = this._state.offers;
+    // console.log(selectedOffers)
+
+    const checkOffersId = selectedOffers.includes(currentOfferId);
+
+    if (!checkOffersId) {
+      selectedOffers.push(currentOfferId);
+    }
+
+    // console.log(selectedOffers)
+
+    // this.updateElement({
+    //   offers: selectedOffers
+    // });
+
+  };
+
+
+  #onPriceChange = (evt) => {
+    evt.preventDefault();
+
+    const writtenPrice = +evt.target.value;
+
+    if (writtenPrice < 0) {
+      this.element.querySelector('.event__save-btn').disabled = true;
+    } else {
+      this.element.querySelector('.event__save-btn').disabled = false;
+      this.updateElement({
+        basePrice: evt.target.value
+      });
+    }
+  };
+
+  // static parsePointToState(point) {
+
+  //   return {
+  //     ...point,
+  //   };
+
+  // }
+
+  // static parseStateToPoint(state) {
+  //   return {
+  //     ...state,
+  //   };
+
+  // }
 
 }
