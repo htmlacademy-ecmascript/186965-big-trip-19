@@ -1,7 +1,6 @@
 import { humanizeDate } from '../../utils/point.js';
 import { DATE_TIME_EDIT_EVENT, POINT_TYPES } from '../../const.js';
-import { mockOffersTypes } from '../../mock/offers.js';
-import { mockDestinations } from '../../mock/destinations.js';
+
 
 import AbstractStatefulView from '../../framework/view/abstract-stateful-view.js';
 
@@ -21,49 +20,49 @@ const DEFAULT_POINT = {
 };
 
 
-const getAllPointTypeOffers = (point) => {
-  const { type } = point;
-  const pointTypeOffer = mockOffersTypes.find((offer) => offer.type === type);
+// const getAllPointTypeOffers = (point) => {
+//   const { type } = point;
+//   const pointTypeOffer = mockOffersTypes.find((offer) => offer.type === type);
 
-  return pointTypeOffer;
-};
+//   return pointTypeOffer;
+// };
 
-const allDestinationsValues = Object.values(mockDestinations);
+// const allDestinationsValues = Object.values(mockDestinations);
 // const allDestinationPictures = Object.values(mockDestinations);
 
 
-const createPointOffersTemplate = (point) => {
+// const createPointOffersTemplate = (point) => {
 
-  const allPointTypeOffers = getAllPointTypeOffers(point);
+//   const allPointTypeOffers = getAllPointTypeOffers(point);
 
-  if (!allPointTypeOffers) {
-    return [];
-  }
+//   if (!allPointTypeOffers) {
+//     return [];
+//   }
 
 
-  return allPointTypeOffers.offers.map((offer) => (
+//   return allPointTypeOffers.offers.map((offer) => (
 
-    `<div class="event__offer-selector">
-      <input class="event__offer-checkbox  visually-hidden" id="event-offer-${point.type}-${offer.id}" type="checkbox" name="event-offer-luggage" ${offer.checked ? 'checked' : ''} value="${offer.id}">
-      <label class="event__offer-label" for="event-offer-${point.type}-${offer.id}">
-        <span class="event__offer-title">${offer.title}</span>
-        +€&nbsp;
-        <span class="event__offer-price">${offer.price}</span>
-      </label>
-    </div> `)).join('');
-};
+//     `<div class="event__offer-selector">
+//       <input class="event__offer-checkbox  visually-hidden" id="event-offer-${point.type}-${offer.id}" type="checkbox" name="event-offer-luggage" ${offer.checked ? 'checked' : ''} value="${offer.id}">
+//       <label class="event__offer-label" for="event-offer-${point.type}-${offer.id}">
+//         <span class="event__offer-title">${offer.title}</span>
+//         +€&nbsp;
+//         <span class="event__offer-price">${offer.price}</span>
+//       </label>
+//     </div> `)).join('');
+// };
 
-const createPointEventTemplate = (currentType) => {
-  const pointEventItem = POINT_TYPES.map((item) => (`<div class="event__type-item">
-    <input id="event-${item}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item}" ${item === currentType ? 'checked' : ''}>
-    <label class="event__type-label  event__type-label--${item}" for="event-type--${item}-1">${item}</label>
-  </div>`)
-  ).join('');
+// const createPointEventTemplate = (currentType) => {
+//   const pointEventItem = POINT_TYPES.map((item) => (`<div class="event__type-item">
+//     <input id="event-${item}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item}" ${item === currentType ? 'checked' : ''}>
+//     <label class="event__type-label  event__type-label--${item}" for="event-type--${item}-1">${item}</label>
+//   </div>`)
+//   ).join('');
 
-  return pointEventItem;
-};
+//   return pointEventItem;
+// };
 
-const createDestinationsTemplate = () => allDestinationsValues.map((destination) => `<option value="${destination.name}"></option>`).join('');
+// const createDestinationsTemplate = () => allDestinationsValues.map((destination) => `<option value="${destination.name}"></option>`).join('');
 
 
 // const createDestinationPicturesTemplate = (point) => {
@@ -76,15 +75,15 @@ const createDestinationsTemplate = () => allDestinationsValues.map((destination)
 // };
 
 
-const getCheckedOffers = (point) => {
-  const allPointTypeOffers = getAllPointTypeOffers(point);
-  const checkedOffersId = [];
+// const getCheckedOffers = (point) => {
+//   const allPointTypeOffers = getAllPointTypeOffers(point);
+//   const checkedOffersId = [];
 
-  allPointTypeOffers.offers.map((offer) => offer.checked ? checkedOffersId.push(offer.id) : '');
+//   allPointTypeOffers.offers.map((offer) => offer.checked ? checkedOffersId.push(offer.id) : '');
 
-  return checkedOffersId;
+//   return checkedOffersId;
 
-};
+// };
 
 
 const createEditEventPointTemplate = (point, isEditMode) => {
@@ -93,9 +92,9 @@ const createEditEventPointTemplate = (point, isEditMode) => {
   const dateFromEvent = humanizeDate(dateFrom, DATE_TIME_EDIT_EVENT);
   const dateToEvent = humanizeDate(dateTo, DATE_TIME_EDIT_EVENT);
 
-  const repeatingOfferTemplate = createPointOffersTemplate(point);
-  const createPointTypeTemplate = createPointEventTemplate(type);
-  const destinationTemplate = createDestinationsTemplate();
+  // const repeatingOfferTemplate = createPointOffersTemplate(point);
+  // const createPointTypeTemplate = createPointEventTemplate(type);
+  // const destinationTemplate = createDestinationsTemplate();
   // const picturesTemplate = createDestinationPicturesTemplate(point);
 
   const getRollupBtn = () => isEditMode ? '<button class="event__rollup-btn" type="button"></button>' : '';
@@ -359,20 +358,19 @@ export default class EditTripPointView extends AbstractStatefulView {
     }
   };
 
-  static parsePointToState(point) {
+  // static parsePointToState(point) {
 
-    return {
-      ...point,
-      offers: getCheckedOffers(point)
-    };
+  //   return {
+  //     ...point,
+  //   };
 
-  }
+  // }
 
-  static parseStateToPoint(state) {
-    return {
-      ...state,
-    };
+  // static parseStateToPoint(state) {
+  //   return {
+  //     ...state,
+  //   };
 
-  }
+  // }
 
 }

@@ -15,14 +15,14 @@ import { render, RenderPosition } from './framework/render.js';
 import PointApiService from './points-api-service.js';
 
 const AUTHORIZATION = 'Basic QRHZ8VOva8N0OPa4';
-const END_POINT = 'https://19.ecmascript.pages.academy/big-trip/';
+const END_POINT = 'https://19.ecmascript.pages.academy/big-trip';
 
 
 const tripMainElement = document.querySelector('.trip-main');
 const tripControlsFiltersElement = tripMainElement.querySelector('.trip-controls');
 const tripsEventsContainerElement = document.querySelector('.trip-events');
 
-const pointModel = new TripPointModel({
+const pointsModel = new TripPointModel({
   pointsApiService: new PointApiService(END_POINT, AUTHORIZATION)
 });
 
@@ -36,13 +36,13 @@ render(new NewTripMainInfoBlockView(), tripMainElement, RenderPosition.AFTERBEGI
 const filterPresenter = new FilterPresenter({
   filterContainer: tripControlsFiltersElement,
   filterModel,
-  pointModel
+  pointsModel: pointsModel
 });
 
 
 const headerPresenter = new HeaderPresenter({
   headerContainer: tripMainElement,
-  pointModel
+  pointsModel: pointsModel
 });
 
 filterPresenter.init();
@@ -51,9 +51,10 @@ headerPresenter.init();
 
 //main
 const mainPresenter = new TripBoardPresenter({
-  tripComponent: tripsEventsContainerElement,
+  tripsEventsContainer: tripsEventsContainerElement,
   filterModel: filterModel,
-  headerContainer: tripMainElement
+  headerContainer: tripMainElement,
+  pointsModel: pointsModel
 });
 
 mainPresenter.init();

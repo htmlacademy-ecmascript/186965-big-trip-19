@@ -7,18 +7,18 @@ import { render } from '../../framework/render.js';
 
 export default class HeaderPresenter {
   #headerContainer = null;
-  #pointModel = null;
+  #pointsModel = null;
   #tripPoints = [];
 
 
-  constructor({ headerContainer, pointModel }) {
+  constructor({ headerContainer, pointsModel }) {
     this.#headerContainer = headerContainer;
-    this.#pointModel = pointModel;
+    this.#pointsModel = pointsModel;
   }
 
   init() {
 
-    this.#tripPoints = [...this.#pointModel.points];
+    this.#tripPoints = [...this.#pointsModel.points];
 
     if (this.#tripPoints.length) {
       render(new NewTripInfoMainView(this.#tripPoints), this.#headerContainer.querySelector('.trip-info'));

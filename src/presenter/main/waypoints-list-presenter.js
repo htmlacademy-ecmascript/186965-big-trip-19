@@ -2,6 +2,7 @@ import WaypointPresenter from './waypoint-presenter.js';
 import NewPointPresenter from './new-point-presenter.js';
 import TripEventsListView from '../../view/main/trip-events-list-view.js';
 import TripSortView from '../../view/main/trip-sort-view.js';
+import LoadingView from '../../view/main/loading-view.js';
 
 
 import { render, remove } from '../../framework/render.js';
@@ -14,8 +15,8 @@ import { filter } from '../../utils/filter.js';
 
 
 export default class WaypointsListPresenter {
-  #tripsList = null;
-  #pointModel = null;
+  #tripsEventsContainer = null;
+  #pointsModel = null;
 
   #waypointListComponent = new TripEventsListView();
   #waypointPresenter = new Map();
@@ -31,13 +32,16 @@ export default class WaypointsListPresenter {
   #newPointPresenter = null;
   #handleNewPointDestroy = null;
 
-  constructor({ tripsList, pointModel, filterModel, onNewPointDestroy }) {
-    this.#tripsList = tripsList;
-    this.#pointModel = pointModel;
+  #loadingComponent = new LoadingView();
+  #isLoading = true;
+
+  constructor({ tripsEventsContainer, pointsModel, filterModel, onNewPointDestroy }) {
+    this.#tripsEventsContainer = tripsEventsContainer;
+    this.#pointsModel = pointsModel;
     this.#filterModel = filterModel;
     this.#handleNewPointDestroy = onNewPointDestroy;
 
-    this.#pointModel.addObserver(this.#handleModelEvent);
+    this.#pointsModel.addObserver(this.#handleModelEvent);
     this.#filterModel.addObserver(this.#handleModelEvent);
 
     this.#newPointPresenter = new NewPointPresenter({
@@ -50,7 +54,7 @@ export default class WaypointsListPresenter {
 
   get points() {
     this.#filterType = this.#filterModel.filter;
-    const points = this.#pointModel.points;
+    const points = this.#pointsModel.points;
     const filteredTasks = filter[this.#filterType](points);
 
 
@@ -78,7 +82,7 @@ export default class WaypointsListPresenter {
 
   #renderPoint(point) {
     const waypointPresenter = new WaypointPresenter({
-      waypointList: this.#waypointListComponent.element,
+      waypointsListComponent: this.#waypointListComponent.element,
       onWaypointChange: this.#handleViewAction,
       onWaypointModeChange: this.#handleWaypointModeChange,
       filterType: this.#filterType
@@ -91,6 +95,11 @@ export default class WaypointsListPresenter {
 
   #renderPointsList() {
     this.#renderSortView();
+
+    if (this.#isLoading) {
+      this.#renderLoading();
+      return;
+    }
 
     const pointCount = this.points.length;
     const points = this.points.slice();
@@ -110,7 +119,7 @@ export default class WaypointsListPresenter {
   }
 
   #renderNoPoints() {
-    render(this.#noPointComponent, this.#tripsList);
+    render(this.#noPointComponent, this.#tripsEventsContainer);
   }
 
   #handleWaypointModeChange = () => {
@@ -148,6 +157,7 @@ export default class WaypointsListPresenter {
     this.#waypointPresenter.clear();
 
     remove(this.#sortComponent);
+    remove(this.#loadingComponent);
 
     if (this.#noPointComponent) {
       remove(this.#noPointComponent);
@@ -161,13 +171,13 @@ export default class WaypointsListPresenter {
   #handleViewAction = (actionType, updateType, update) => {
     switch (actionType) {
       case UserAction.UPDATE_WAYPOINT:
-        this.#pointModel.updateWaypoint(updateType, update);
+        this.#pointsModel.updateWaypoint(updateType, update);
         break;
       case UserAction.ADD_WAYPOINT:
-        this.#pointModel.addWaypoint(updateType, update);
+        this.#pointsModel.addWaypoint(updateType, update);
         break;
       case UserAction.DELETE_WAYPOINT:
-        this.#pointModel.deleteWaypoint(updateType, update);
+        this.#pointsModel.deleteWaypoint(updateType, update);
         break;
     }
   };
@@ -188,8 +198,17 @@ export default class WaypointsListPresenter {
         this.#renderPointsList();
         // - обновить всю доску (например, при переключении фильтра)
         break;
+      case UpdateType.INIT:
+        this.#isLoading = false;
+        remove(this.#loadingComponent);
+        this.#renderPointsList();
+        break;
     }
   };
 
+
+  #renderLoading() {
+    render(this.#loadingComponent, this.#tripsEventsContainer);
+  }
 
 }

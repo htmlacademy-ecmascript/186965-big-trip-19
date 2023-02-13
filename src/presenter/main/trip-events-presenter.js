@@ -1,13 +1,12 @@
 
 import WaypointsListPresenter from './waypoints-list-presenter.js';
-import TripPointModel from '../../models/trip-point-model.js';
 import NewPointButtonView from '../../view/header/new-point-button-view.js';
 
 import { render } from '../../framework/render.js';
 
 export default class TripBoardPresenter {
-  #tripComponent = null;
-  #pointModel = null;
+  #tripsEventsContainer = null;
+  #pointsModel = null;
   #filterModel = null;
 
   #waypointListPresenter = null;
@@ -16,15 +15,18 @@ export default class TripBoardPresenter {
 
   #headerContainer = null;
 
-  constructor({ tripComponent, filterModel, headerContainer }) {
-    this.#tripComponent = tripComponent;
+  constructor({ tripsEventsContainer, filterModel, headerContainer, pointsModel }) {
+    this.#tripsEventsContainer = tripsEventsContainer;
     this.#filterModel = filterModel;
     this.#headerContainer = headerContainer;
-
+    this.#pointsModel = pointsModel;
   }
 
   init() {
-    this.#pointModel = new TripPointModel();
+    // this.#pointsModel.init().finally(() => {
+    //   this.#renderNewEventButton();
+    // });
+
     this.#renderNewEventButton();
     this.#renderWaypointsList();
 
@@ -32,8 +34,8 @@ export default class TripBoardPresenter {
 
   #renderWaypointsList() {
     this.#waypointListPresenter = new WaypointsListPresenter({
-      pointListContainer: this.#tripComponent,
-      pointModel: this.#pointModel,
+      tripsEventsContainer: this.#tripsEventsContainer,
+      pointsModel: this.#pointsModel,
       filterModel: this.#filterModel,
       onNewPointDestroy: this.#handleNewTaskFormClose
     });
@@ -57,5 +59,6 @@ export default class TripBoardPresenter {
   #handleNewTaskFormClose = () => {
     this.#newEventButtonComponent.element.disabled = false;
   };
+
 
 }
